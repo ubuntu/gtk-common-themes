@@ -37,6 +37,7 @@ slots:
         - $SNAP/share/icons/ubuntu-mono-light
         - $SNAP/share/icons/DMZ-Black
         - $SNAP/share/icons/DMZ-White
+        - $SNAP/share/icons/Solus
 
 parts:
   # The base icon theme
@@ -117,9 +118,9 @@ parts:
 
   # Solus's default GTK theme
   evopop-gtk-theme:
+    plugin: dump
     source: https://github.com/solus-project/evopop-gtk-theme.git
     source-type: git
-    plugin: dump
     organize:
       EvoPop: share/themes/EvoPop
       EvoPop-Azure: share/themes/EvoPop-Azure
@@ -127,11 +128,27 @@ parts:
       - share/themes/*/gtk-3*
       - share/themes/*/assets
 
+  # Solus's default icon theme
+  solus-icon-theme:
+    plugin: dump
+    source: https://github.com/solus-project/solus-icon-theme.git
+    source-type: git
+    install: |
+      set -ex
+      gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/Solus
+    organize:
+      Solus: share/icons/Solus
+    stage:
+      - share/icons/Solus
+
+    build-packages:
+      - gtk-update-icon-cache
+
   # Arc: common third party theme
   arc-theme:
+    plugin: autotools
     source: https://github.com/horst3180/arc-theme.git
     source-type: git
-    plugin: autotools
     configflags:
       - --disable-cinnamon
       - --disable-gnome-shell
