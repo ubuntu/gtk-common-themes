@@ -19,6 +19,11 @@ slots:
         - $SNAP/share/themes/HighContrast
         - $SNAP/share/themes/Ambiance
         - $SNAP/share/themes/Radiance
+        - $SNAP/share/themes/EvoPop
+        - $SNAP/share/themes/EvoPop-Azure
+        - $SNAP/share/themes/Arc
+        - $SNAP/share/themes/Arc-Dark
+        - $SNAP/share/themes/Arc-Darker
   icon-themes:
     interface: content
     source:
@@ -34,10 +39,11 @@ slots:
         - $SNAP/share/icons/DMZ-White
 
 parts:
+  # The base icon theme
   hicolor-icon-theme:
     plugin: autotools
     source: git://anongit.freedesktop.org/xdg/default-icon-theme
-    install: |
+    install: &update-icon-cache |
       set -ex
       for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
@@ -48,16 +54,11 @@ parts:
     build-packages:
       - gtk-update-icon-cache
 
+  # GNOME's default icon theme, also used by Fedora
   adwaita-icon-theme:
     plugin: autotools
     source: git://git.gnome.org/adwaita-icon-theme
-    install: |
-      set -ex
-      for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
-        if [ -f $dir/index.theme ]; then
-          gtk-update-icon-cache -q $dir
-        fi
-      done
+    install: *update-icon-cache
 
     stage:
       - -share/pkgconfig
@@ -65,18 +66,13 @@ parts:
     build-packages:
       - gtk-update-icon-cache
 
+  # GNOME's default GTK theme, and Accessibility GTK/icon themes
   gnome-themes-extra:
     plugin: autotools
     source: https://gitlab.gnome.org/GNOME/gnome-themes-extra.git
     configflags:
       - --disable-gtk2-engine
-    install: |
-      set -ex
-      for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
-        if [ -f $dir/index.theme ]; then
-          gtk-update-icon-cache -q $dir
-        fi
-      done
+    install: *update-icon-cache
 
     stage:
       - -share/locale
@@ -89,6 +85,7 @@ parts:
       - libgdk-pixbuf2.0-dev
       - libglib2.0-dev
 
+  # Ubuntu's default GTK and icon themes
   ubuntu-themes:
     plugin: nil
     stage-packages:
@@ -117,3 +114,27 @@ parts:
       - share/icons/DMZ-Black
       - share/icons/DMZ-White
       - share/themes/*/gtk-3*
+
+  # Solus's default GTK theme
+  evopop-gtk-theme:
+    source: https://github.com/solus-project/evopop-gtk-theme.git
+    source-type: git
+    plugin: dump
+    organize:
+      EvoPop: share/themes/EvoPop
+      EvoPop-Azure: share/themes/EvoPop-Azure
+    stage:
+      - share/themes/*/gtk-3*
+
+  # Arc: common third party theme
+  arc-theme:
+    source: https://github.com/horst3180/arc-theme.git
+    source-type: git
+    plugin: autotools
+    configflags:
+      - --disable-cinnamon
+      - --disable-gnome-shell
+      - --disable-gtk2
+      - --disable-metacity
+      - --disable-unity
+      - --disable-xfwm
