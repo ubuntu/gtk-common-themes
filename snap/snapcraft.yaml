@@ -125,6 +125,7 @@ parts:
       EvoPop-Azure: share/themes/EvoPop-Azure
     stage:
       - share/themes/*/gtk-3*
+      - share/themes/*/assets
 
   # Arc: common third party theme
   arc-theme:
