@@ -41,6 +41,11 @@ slots:
         - $SNAP/share/icons/Solus
         - $SNAP/share/icons/communitheme
         - $SNAP/share/icons/Suru
+  sound-themes:
+    interface: content
+    source:
+      read:
+        - $SNAP/share/sounds/communitheme
 
 parts:
   # The base icon theme
