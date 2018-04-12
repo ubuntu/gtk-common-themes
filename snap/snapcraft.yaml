@@ -85,6 +85,7 @@ parts:
       - librsvg2-dev
       - libgdk-pixbuf2.0-dev
       - libglib2.0-dev
+      - gnome-common
 
   # Ubuntu's default GTK and icon themes
   ubuntu-themes:
