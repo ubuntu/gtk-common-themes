@@ -54,6 +54,7 @@ parts:
 
     build-packages:
       - gtk-update-icon-cache
+      - gnome-common
 
   # GNOME's default icon theme, also used by Fedora
   adwaita-icon-theme:
