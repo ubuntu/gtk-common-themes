@@ -24,6 +24,7 @@ slots:
         - $SNAP/share/themes/Arc
         - $SNAP/share/themes/Arc-Dark
         - $SNAP/share/themes/Arc-Darker
+        - $SNAP/share/themes/Communitheme
   icon-themes:
     interface: content
     source:
@@ -38,6 +39,13 @@ slots:
         - $SNAP/share/icons/DMZ-Black
         - $SNAP/share/icons/DMZ-White
         - $SNAP/share/icons/Solus
+        - $SNAP/share/icons/communitheme
+        - $SNAP/share/icons/Suru
+  sound-themes:
+    interface: content
+    source:
+      read:
+        - $SNAP/share/sounds/communitheme
 
 parts:
   # The base icon theme
@@ -158,3 +166,16 @@ parts:
       - --disable-metacity
       - --disable-unity
       - --disable-xfwm
+
+  # Communitheme: we want the communitheme and this one to be in sync for bug reports
+  # as it's a fast evolving WIP theme.
+  # Download from select channel the corresponding snap (can be from a branch channel)
+  # and copy its relevant content to this snap
+  # It's currently only available on amd64 as built by Travis.
+  communitheme:
+    plugin: nil
+    build-snaps: [communitheme/latest/edge]
+    install: |
+      set -eu
+      cp -a /snap/communitheme/current/share $SNAPCRAFT_PART_INSTALL/
+      rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
