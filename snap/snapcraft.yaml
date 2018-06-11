@@ -10,7 +10,7 @@ grade: stable
 confinement: strict
 
 slots:
-  gtk3-themes:
+  gtk-3-themes:
     interface: content
     source:
       read:
