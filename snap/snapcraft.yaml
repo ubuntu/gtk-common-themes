@@ -25,6 +25,7 @@ slots:
         - $SNAP/share/themes/Arc-Dark
         - $SNAP/share/themes/Arc-Darker
         - $SNAP/share/themes/Communitheme
+        - $SNAP/share/themes/Yaru
   icon-themes:
     interface: content
     source:
@@ -41,11 +42,13 @@ slots:
         - $SNAP/share/icons/Solus
         - $SNAP/share/icons/communitheme
         - $SNAP/share/icons/Suru
+        - $SNAP/share/icons/Yaru
   sound-themes:
     interface: content
     source:
       read:
         - $SNAP/share/sounds/communitheme
+        - $SNAP/share/sounds/Yaru
 
 parts:
   # The base icon theme
@@ -179,3 +182,20 @@ parts:
       set -eu
       cp -a /snap/communitheme/current/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
+
+  # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
+  yaru:
+    after: [ sassc ]
+    source: https://github.com/ubuntu/yaru.git
+    plugin: meson
+    meson-parameters: [ --prefix=/ ]
+  sassc:
+    after: [ libsass ]
+    source: https://github.com/sass/sassc/archive/3.5.0.tar.gz
+    plugin: autotools
+    override-prime: ""
+  libsass:
+    source: https://github.com/sass/libsass.git
+    source-tag: 3.5.0
+    plugin: autotools
+    override-prime: ""
