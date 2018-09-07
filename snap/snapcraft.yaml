@@ -50,6 +50,7 @@ slots:
     source:
       read:
         - $SNAP/share/sounds/communitheme
+        - $SNAP/share/sounds/Yaru
 
 parts:
   # The base icon theme
@@ -57,8 +58,9 @@ parts:
     plugin: autotools
     source: git://anongit.freedesktop.org/xdg/default-icon-theme
     source-type: git
-    install: &update-icon-cache |
+    override-build: &update-icon-cache |
       set -ex
+      snapcraftctl build
       for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
           gtk-update-icon-cache -q $dir
@@ -74,8 +76,7 @@ parts:
     plugin: autotools
     source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
     source-type: git
-    install: *update-icon-cache
-
+    override-build: *update-icon-cache
     stage:
       - -share/pkgconfig
 
@@ -89,7 +90,7 @@ parts:
     source-type: git
     configflags:
       - --disable-gtk2-engine
-    install: *update-icon-cache
+    override-build: *update-icon-cache
 
     stage:
       - -share/locale
@@ -111,8 +112,9 @@ parts:
       - humanity-icon-theme
       - ubuntu-mono
       - dmz-cursor-theme
-    install: |
+    override-build: |
       set -ex
+      snapcraftctl build
       for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
           gtk-update-icon-cache -q $dir
@@ -186,8 +188,9 @@ parts:
     plugin: dump
     source: https://github.com/solus-project/solus-icon-theme.git
     source-type: git
-    install: |
+    override-build: |
       set -ex
+      snapcraftctl build
       gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/Solus
     organize:
       Solus: share/icons/Solus
@@ -218,7 +221,25 @@ parts:
   communitheme:
     plugin: nil
     build-snaps: [communitheme/latest/edge]
-    install: |
+    override-build: |
       set -eu
+      snapcraftctl build
       cp -a /snap/communitheme/current/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
+
+  # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
+  yaru:
+    after: [ sassc ]
+    source: https://github.com/ubuntu/yaru.git
+    plugin: meson
+    meson-parameters: [ --prefix=/ ]
+  sassc:
+    after: [ libsass ]
+    source: https://github.com/sass/sassc/archive/3.5.0.tar.gz
+    plugin: autotools
+    override-prime: ""
+  libsass:
+    source: https://github.com/sass/libsass.git
+    source-tag: 3.5.0
+    plugin: autotools
+    override-prime: ""
