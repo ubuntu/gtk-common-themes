@@ -25,6 +25,7 @@ slots:
         - $SNAP/share/themes/Arc-Dark
         - $SNAP/share/themes/Arc-Darker
         - $SNAP/share/themes/Communitheme
+        - $SNAP/share/themes/elementary
   icon-themes:
     interface: content
     source:
@@ -41,6 +42,7 @@ slots:
         - $SNAP/share/icons/Solus
         - $SNAP/share/icons/communitheme
         - $SNAP/share/icons/Suru
+        - $SNAP/share/icons/elementary
   sound-themes:
     interface: content
     source:
@@ -141,6 +143,42 @@ parts:
       - share/themes/*/gtk-3*
       - share/themes/*/assets
 
+  # Elementary gtk theme
+  elementary-gtk-theme:
+    plugin: meson
+    source: https://github.com/elementary/stylesheet.git
+    source-type: git
+    organize:
+      usr/share/themes: share/themes
+    meson-parameters: [--prefix=/usr]
+    stage:
+      - share/themes/*/gtk-3*
+      - share/themes/*/assets
+    build-packages:
+      - libgtk-3-dev
+      - libglib2.0-dev
+      - gnome-common
+
+  # Elementary icon theme
+  elementary-icon-theme:
+    plugin: meson
+    source: https://github.com/elementary/icons.git
+    source-type: git
+    # Set scale_factors to 1, it does some funky linking
+    meson-parameters: [--prefix=/usr, -Dscale_factors=1, -Dvolume_icons=false]
+    organize:
+      usr/share/icons: share/icons
+    override-build: |
+      set -ex
+      # Don't include cursors, it does some funky linking
+      sed -i.bak -e "s|subdir('cursors')||g" meson.build
+      snapcraftctl build
+      gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/usr/share/icons/elementary
+    stage:
+      - share/icons/elementary
+    build-packages:
+      - gtk-update-icon-cache
+    
   # Solus's default icon theme
   solus-icon-theme:
     plugin: dump
