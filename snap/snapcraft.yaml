@@ -25,6 +25,7 @@ slots:
         - $SNAP/share/themes/Arc-Dark
         - $SNAP/share/themes/Arc-Darker
         - $SNAP/share/themes/Communitheme
+        - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/elementary
   icon-themes:
     interface: content
@@ -42,6 +43,7 @@ slots:
         - $SNAP/share/icons/Solus
         - $SNAP/share/icons/communitheme
         - $SNAP/share/icons/Suru
+        - $SNAP/share/icons/Yaru
         - $SNAP/share/icons/elementary
   sound-themes:
     interface: content
