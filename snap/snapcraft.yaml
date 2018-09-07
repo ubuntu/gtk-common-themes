@@ -55,8 +55,9 @@ parts:
   hicolor-icon-theme:
     plugin: autotools
     source: git://anongit.freedesktop.org/xdg/default-icon-theme
-    install: &update-icon-cache |
+    override-build: &update-icon-cache |
       set -ex
+      snapcraftctl build
       for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
           gtk-update-icon-cache -q $dir
@@ -70,9 +71,8 @@ parts:
   # GNOME's default icon theme, also used by Fedora
   adwaita-icon-theme:
     plugin: autotools
-    source: git://git.gnome.org/adwaita-icon-theme
-    install: *update-icon-cache
-
+    source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
+    override-build: *update-icon-cache
     stage:
       - -share/pkgconfig
 
@@ -85,7 +85,7 @@ parts:
     source: https://gitlab.gnome.org/GNOME/gnome-themes-extra.git
     configflags:
       - --disable-gtk2-engine
-    install: *update-icon-cache
+    override-build: *update-icon-cache
 
     stage:
       - -share/locale
@@ -107,8 +107,9 @@ parts:
       - humanity-icon-theme
       - ubuntu-mono
       - dmz-cursor-theme
-    install: |
+    override-build: |
       set -ex
+      snapcraftctl build
       for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
           gtk-update-icon-cache -q $dir
@@ -146,8 +147,9 @@ parts:
     plugin: dump
     source: https://github.com/solus-project/solus-icon-theme.git
     source-type: git
-    install: |
+    override-build: |
       set -ex
+      snapcraftctl build
       gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/Solus
     organize:
       Solus: share/icons/Solus
@@ -178,8 +180,9 @@ parts:
   communitheme:
     plugin: nil
     build-snaps: [communitheme/latest/edge]
-    install: |
+    override-build: |
       set -eu
+      snapcraftctl build
       cp -a /snap/communitheme/current/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
 
