@@ -52,6 +52,7 @@ parts:
   hicolor-icon-theme:
     plugin: autotools
     source: git://anongit.freedesktop.org/xdg/default-icon-theme
+    source-type: git
     install: &update-icon-cache |
       set -ex
       for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
@@ -67,7 +68,8 @@ parts:
   # GNOME's default icon theme, also used by Fedora
   adwaita-icon-theme:
     plugin: autotools
-    source: git://git.gnome.org/adwaita-icon-theme
+    source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
+    source-type: git
     install: *update-icon-cache
 
     stage:
@@ -80,6 +82,7 @@ parts:
   gnome-themes-extra:
     plugin: autotools
     source: https://gitlab.gnome.org/GNOME/gnome-themes-extra.git
+    source-type: git
     configflags:
       - --disable-gtk2-engine
     install: *update-icon-cache
