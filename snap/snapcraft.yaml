@@ -235,7 +235,8 @@ parts:
     meson-parameters: [ --prefix=/ ]
   sassc:
     after: [ libsass ]
-    source: https://github.com/sass/sassc/archive/3.5.0.tar.gz
+    source: https://github.com/sass/sassc.git
+    source-tag: 3.5.0
     plugin: autotools
     override-prime: ""
   libsass:
