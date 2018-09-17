@@ -228,8 +228,7 @@ parts:
       unsquashfs communitheme*.snap
     override-build: |
       set -eu
-      snapcraftctl build
-      cp -a /snap/communitheme/current/share $SNAPCRAFT_PART_INSTALL/
+      cp -a squashfs-root/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
