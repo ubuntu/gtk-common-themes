@@ -1,22 +1,18 @@
-image: snapcore/snapcraft:stable
-
-stages:
-  - build
-
-before_script:
-  - export LC_ALL=C.UTF-8
-  - export LANG=C.UTF-8
-  - export SNAP_ARCH=amd64
-  - apt-get -y update
-  - apt-get install -y software-properties-common
-  - add-apt-repository -y ppa:ubuntu-desktop/gnome-3-26
-  - apt-get -y update
-  - apt-get -y dist-upgrade
-
-build-gtk-common-themes-snap:
+build:snap:
   stage: build
-  script:
+  image: snapcore/snapcraft
+  before_script:
+    - apt-get install -q -y --no-install-recommends software-properties-common
+    - add-apt-repository -yu ppa:ubuntu-desktop/gnome-3-26
+  script: 
+    - export LC_ALL=C.UTF-8
+    - export LANG=C.UTF-8
+    - export SNAP_ARCH=amd64
     - echo $LOGIN | snapcraft login --with -
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
     - snapcraft push gtk-common-themes*.snap --release edge
     - snapcraft logout
+  allow_failure: false
+  artifacts:
+    paths: ['./*.snap']
+    expire_in: 3 days
