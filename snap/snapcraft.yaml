@@ -220,7 +220,12 @@ parts:
   # It's currently only available on amd64 as built by Travis.
   communitheme:
     plugin: nil
-    build-snaps: [communitheme/latest/edge]
+    build-packages: [snapd]
+    # note: build-snaps causes a segfault in docker
+    override-pull: |
+      set -eu
+      snap download communitheme --edge
+      unsquashfs communitheme*.snap
     override-build: |
       set -eu
       snapcraftctl build
