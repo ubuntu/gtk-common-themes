@@ -7,7 +7,10 @@ build:snap:
     - export SNAP_ARCH=amd64
     - echo $LOGIN | snapcraft login --with -
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
-    - [ "$CI_COMMIT_REF_NAME" = "master" ] && snapcraft push gtk-common-themes*.snap --release edge
+    - |
+       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
+         snapcraft push gtk-common-themes*.snap --release edge
+       fi
     - snapcraft logout
   allow_failure: false
   artifacts:
