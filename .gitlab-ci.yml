@@ -5,6 +5,9 @@ build:snap:
     - export LC_ALL=C.UTF-8
     - export LANG=C.UTF-8
     - export SNAP_ARCH=amd64
+    - add-apt-repository -y ppa:ken-vandine/gnome-3-26
+    - apt-get -y update
+    - apt-get -y upgrade
     - echo $LOGIN | snapcraft login --with -
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
     - |
