@@ -202,6 +202,7 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
       cp -a usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
       find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
 
   # Mint-Y is the default icon theme in Linux Mint 19
   mint-y-icons:
@@ -212,6 +213,7 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
       cp -a usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
       find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
 
   # Arc: common third party theme
   arc-theme:
