@@ -27,6 +27,8 @@ slots:
         - $SNAP/share/themes/Communitheme
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/elementary
+        - $SNAP/share/themes/Mint-X
+        - $SNAP/share/themes/Mint-Y
   icon-themes:
     interface: content
     source:
@@ -45,6 +47,29 @@ slots:
         - $SNAP/share/icons/Suru
         - $SNAP/share/icons/Yaru
         - $SNAP/share/icons/elementary
+        - $SNAP/share/icons/Mint-X
+        - $SNAP/share/icons/Mint-X-Aqua
+        - $SNAP/share/icons/Mint-X-Blue
+        - $SNAP/share/icons/Mint-X-Brown
+        - $SNAP/share/icons/Mint-X-Dark
+        - $SNAP/share/icons/Mint-X-Grey
+        - $SNAP/share/icons/Mint-X-Orange
+        - $SNAP/share/icons/Mint-X-Pink
+        - $SNAP/share/icons/Mint-X-Purple
+        - $SNAP/share/icons/Mint-X-Red
+        - $SNAP/share/icons/Mint-X-Sand
+        - $SNAP/share/icons/Mint-X-Teal
+        - $SNAP/share/icons/Mint-X-Yellow
+        - $SNAP/share/icons/Mint-Y
+        - $SNAP/share/icons/Mint-Y-Aqua
+        - $SNAP/share/icons/Mint-Y-Blue
+        - $SNAP/share/icons/Mint-Y-Brown
+        - $SNAP/share/icons/Mint-Y-Grey
+        - $SNAP/share/icons/Mint-Y-Orange
+        - $SNAP/share/icons/Mint-Y-Pink
+        - $SNAP/share/icons/Mint-Y-Purple
+        - $SNAP/share/icons/Mint-Y-Red
+        - $SNAP/share/icons/Mint-Y-Sand
   sound-themes:
     interface: content
     source:
@@ -200,6 +225,26 @@ parts:
     build-packages:
       - gtk-update-icon-cache
 
+  # Mint-X is the default icon theme in Linux Mint 18
+  mint-x-icons:
+    source: https://github.com/linuxmint/mint-x-icons.git
+    plugin: nil
+    override-build: |
+      set -ex
+      mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
+      cp -a usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
+
+  # Mint-Y is the default icon theme in Linux Mint 19
+  mint-y-icons:
+    source: https://github.com/linuxmint/mint-y-icons.git
+    plugin: nil
+    override-build: |
+      set -ex
+      mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
+      cp -a usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
+
   # Arc: common third party theme
   arc-theme:
     plugin: autotools
@@ -230,6 +275,17 @@ parts:
       set -eu
       cp -a squashfs-root/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
+
+  # Mint is the default theme in Linux Mint
+  mint-themes:
+    source: https://github.com/linuxmint/mint-themes.git
+    plugin: make
+    build-packages:
+      - ruby-sass
+    override-build: |
+      set -ex
+      mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
+      cp -a src/Mint-*/theme/* $SNAPCRAFT_PART_INSTALL/share/themes/
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
