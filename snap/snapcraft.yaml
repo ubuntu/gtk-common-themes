@@ -61,6 +61,9 @@ parts:
     override-build: &update-icon-cache |
       set -ex
       snapcraftctl build
+      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
       for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
           gtk-update-icon-cache -q $dir
@@ -115,6 +118,9 @@ parts:
     override-build: |
       set -ex
       snapcraftctl build
+      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel |xargs rm -rf
       for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
           gtk-update-icon-cache -q $dir
@@ -177,6 +183,9 @@ parts:
       # Don't include cursors, it does some funky linking
       sed -i.bak -e "s|subdir('cursors')||g" meson.build
       snapcraftctl build
+      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel |xargs rm -rf
       gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/usr/share/icons/elementary
     stage:
       - share/icons/elementary
@@ -191,6 +200,9 @@ parts:
     override-build: |
       set -ex
       snapcraftctl build
+      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      find $SNAPCRAFT_PART_INSTALL/Solus -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/Solus -name panel |xargs rm -rf
       gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/Solus
     organize:
       Solus: share/icons/Solus
@@ -230,6 +242,9 @@ parts:
       set -eu
       cp -a squashfs-root/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
+      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
@@ -243,6 +258,9 @@ parts:
       rm -rf $SNAPCRAFT_PART_INSTALL/share/*sessions $SNAPCRAFT_PART_INSTALL/share/glib-2.0
       # don't support dark variant until it's ready
       rm -r $SNAPCRAFT_PART_INSTALL/share/themes/*-dark
+      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
   sassc:
     after: [ libsass ]
     source: https://github.com/sass/sassc.git
