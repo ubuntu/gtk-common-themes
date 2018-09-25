@@ -25,6 +25,9 @@ slots:
         - $SNAP/share/themes/Communitheme
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/elementary
+        - $SNAP/share/themes/Ambiant-MATE
+        - $SNAP/share/themes/Ambiant-MATE-Dark
+        - $SNAP/share/themes/Radiant-MATE
   icon-themes:
     interface: content
     source:
@@ -42,6 +45,8 @@ slots:
         - $SNAP/share/icons/Suru
         - $SNAP/share/icons/Yaru
         - $SNAP/share/icons/elementary
+        - $SNAP/share/icons/Ambiant-MATE
+        - $SNAP/share/icons/Radiant-MATE
   sound-themes:
     interface: content
     source:
@@ -142,6 +147,37 @@ parts:
       - share/icons/ubuntu-mono-light
       - share/icons/DMZ-Black
       - share/icons/DMZ-White
+      - share/themes/*/gtk-3*
+
+  # Default themes for Ubuntu MATE
+  ubuntu-mate-themes:
+    plugin: nil
+    stage-packages:
+      - ubuntu-mate-themes
+      - ubuntu-mate-icon-themes
+    override-build: |
+      set -ex
+      snapcraftctl build
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel |xargs rm -rf
+      for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
+        if [ -f $dir/index.theme ]; then
+          gtk-update-icon-cache -q $dir
+        fi
+      done
+
+    build-packages:
+      - gtk-update-icon-cache
+    organize:
+      usr/share/icons: share/icons
+      usr/share/themes: share/themes
+    stage:
+      - share/icons/Ambiant-MATE
+      - share/icons/Radiant-MATE
       - share/themes/*/gtk-3*
 
   # Elementary gtk theme
