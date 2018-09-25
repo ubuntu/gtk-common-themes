@@ -19,8 +19,6 @@ slots:
         - $SNAP/share/themes/HighContrast
         - $SNAP/share/themes/Ambiance
         - $SNAP/share/themes/Radiance
-        - $SNAP/share/themes/EvoPop
-        - $SNAP/share/themes/EvoPop-Azure
         - $SNAP/share/themes/Arc
         - $SNAP/share/themes/Arc-Dark
         - $SNAP/share/themes/Arc-Darker
@@ -40,7 +38,6 @@ slots:
         - $SNAP/share/icons/ubuntu-mono-light
         - $SNAP/share/icons/DMZ-Black
         - $SNAP/share/icons/DMZ-White
-        - $SNAP/share/icons/Solus
         - $SNAP/share/icons/communitheme
         - $SNAP/share/icons/Suru
         - $SNAP/share/icons/Yaru
@@ -141,18 +138,6 @@ parts:
       - share/icons/DMZ-White
       - share/themes/*/gtk-3*
 
-  # Solus's default GTK theme
-  evopop-gtk-theme:
-    plugin: dump
-    source: https://github.com/solus-project/evopop-gtk-theme.git
-    source-type: git
-    organize:
-      EvoPop: share/themes/EvoPop
-      EvoPop-Azure: share/themes/EvoPop-Azure
-    stage:
-      - share/themes/*/gtk-3*
-      - share/themes/*/assets
-
   # Elementary gtk theme
   elementary-gtk-theme:
     plugin: meson
@@ -189,26 +174,6 @@ parts:
       gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/usr/share/icons/elementary
     stage:
       - share/icons/elementary
-    build-packages:
-      - gtk-update-icon-cache
-    
-  # Solus's default icon theme
-  solus-icon-theme:
-    plugin: dump
-    source: https://github.com/solus-project/solus-icon-theme.git
-    source-type: git
-    override-build: |
-      set -ex
-      snapcraftctl build
-      # don't include app and panel icons to reduce size and they aren't useful in the snap
-      find $SNAPCRAFT_PART_INSTALL/Solus -name apps |xargs rm -rf
-      find $SNAPCRAFT_PART_INSTALL/Solus -name panel |xargs rm -rf
-      gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/Solus
-    organize:
-      Solus: share/icons/Solus
-    stage:
-      - share/icons/Solus
-
     build-packages:
       - gtk-update-icon-cache
 
