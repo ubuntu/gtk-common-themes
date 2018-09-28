@@ -83,7 +83,10 @@ parts:
     override-build: &update-icon-cache |
       set -ex
       snapcraftctl build
-      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
       find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
       find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
       for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
@@ -140,7 +143,10 @@ parts:
     override-build: |
       set -ex
       snapcraftctl build
-      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
       find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps |xargs rm -rf
       find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel |xargs rm -rf
       for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
@@ -193,7 +199,10 @@ parts:
       # Don't include cursors, it does some funky linking
       sed -i.bak -e "s|subdir('cursors')||g" meson.build
       snapcraftctl build
-      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
       find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps |xargs rm -rf
       find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel |xargs rm -rf
       gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/usr/share/icons/elementary
@@ -210,6 +219,10 @@ parts:
       set -ex
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
       cp -a usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
       find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
       find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
 
@@ -221,6 +234,10 @@ parts:
       set -ex
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
       cp -a usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
       find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
       find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
 
@@ -254,7 +271,10 @@ parts:
       set -eu
       cp -a squashfs-root/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
-      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
       find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
       find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
 
@@ -268,6 +288,12 @@ parts:
       set -ex
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
       cp -a src/Mint-*/theme/* $SNAPCRAFT_PART_INSTALL/share/themes/
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
@@ -281,7 +307,10 @@ parts:
       rm -rf $SNAPCRAFT_PART_INSTALL/share/*sessions $SNAPCRAFT_PART_INSTALL/share/glib-2.0
       # don't support dark variant until it's ready
       rm -r $SNAPCRAFT_PART_INSTALL/share/themes/*-dark
-      # don't include app and panel icons to reduce size and they aren't useful in the snap
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap.  If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however that's
+      # a corner case.
       find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
       find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
   sassc:
