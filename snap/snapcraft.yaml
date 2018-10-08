@@ -10,6 +10,21 @@ grade: stable
 confinement: strict
 
 slots:
+  gtk-2-themes:
+    interface: content
+    source:
+      read:
+        - $SNAP/share/gtk2/Adwaita
+        - $SNAP/share/gtk2/Adwaita-dark
+        - $SNAP/share/gtk2/HighContrast
+        - $SNAP/share/gtk2/Ambiance
+        - $SNAP/share/gtk2/Radiance
+        - $SNAP/share/gtk2/Arc
+        - $SNAP/share/gtk2/Arc-Dark
+        - $SNAP/share/gtk2/Arc-Darker
+        - $SNAP/share/gtk2/Communitheme
+        - $SNAP/share/gtk2/Yaru
+        - $SNAP/share/gtk2/elementary
   gtk-3-themes:
     interface: content
     source:
@@ -56,11 +71,9 @@ parts:
     plugin: autotools
     source: git://anongit.freedesktop.org/xdg/default-icon-theme
     source-type: git
-    override-build: &update-icon-cache |
-      set -ex
+    override-build: |
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
-
     build-packages:
       - gnome-common
 
@@ -70,7 +83,9 @@ parts:
     plugin: autotools
     source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
     source-type: git
-    override-build: *update-icon-cache
+    override-build: |
+      snapcraftctl build
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
     stage:
       - -share/pkgconfig
 
@@ -80,12 +95,14 @@ parts:
     plugin: autotools
     source: https://gitlab.gnome.org/GNOME/gnome-themes-extra.git
     source-type: git
-    override-build: *update-icon-cache
-
+    override-build: |
+      snapcraftctl build
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
     stage:
       - share/icons
-      - share/themes/*/gtk-2.0
-      - share/themes/*/gtk-3.*
+      - share/gtk2/*/gtk-2.0
+      - share/themes/*/gtk-3*
 
     build-packages:
       - libgtk2.0-dev
@@ -105,13 +122,10 @@ parts:
       - ubuntu-mono
       - dmz-cursor-theme
     override-build: |
-      set -ex
       snapcraftctl build
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/usr/share/icons
-
-    organize:
-      usr/share/icons: share/icons
-      usr/share/themes: share/themes
+      mv $SNAPCRAFT_PART_INSTALL/usr/share $SNAPCRAFT_PART_INSTALL/share
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
     stage:
       - share/icons/Humanity
       - share/icons/Humanity-Dark
@@ -119,7 +133,7 @@ parts:
       - share/icons/ubuntu-mono-light
       - share/icons/DMZ-Black
       - share/icons/DMZ-White
-      - share/themes/*/gtk-2.0
+      - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
 
   # Elementary gtk theme
@@ -129,10 +143,12 @@ parts:
     source: https://github.com/elementary/stylesheet.git
     source-type: git
     meson-parameters: [--prefix=/]
+    override-build: |
+      snapcraftctl build
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
     stage:
-      - share/themes/*/gtk-2.0
+      - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
-      - share/themes/*/assets
     build-packages:
       - libgtk-3-dev
       - libglib2.0-dev
@@ -147,7 +163,6 @@ parts:
     # Set scale_factors to 1, it does some funky linking
     meson-parameters: [--prefix=/, -Dscale_factors=1, -Dvolume_icons=false]
     override-build: |
-      set -ex
       # Don't include cursors, it does some funky linking
       sed -i.bak -e "s|subdir('cursors')||g" meson.build
       snapcraftctl build
@@ -164,10 +179,15 @@ parts:
     configflags:
       - --disable-cinnamon
       - --disable-gnome-shell
-      - --disable-gtk2
       - --disable-metacity
       - --disable-unity
       - --disable-xfwm
+    override-build: |
+      snapcraftctl build
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+    stage:
+      - share/gtk2/*/gtk-2.0
+      - share/themes/*/gtk-3*
 
   # Communitheme: we want the communitheme and this one to be in sync for bug reports
   # as it's a fast evolving WIP theme.
@@ -184,10 +204,14 @@ parts:
       snap download communitheme --edge
       unsquashfs communitheme*.snap
     override-build: |
-      set -eu
       cp -a squashfs-root/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+    stage:
+      - share/icons
+      - share/gtk2/*/gtk-2.0
+      - share/themes/*/gtk-3*
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
@@ -196,13 +220,17 @@ parts:
     plugin: meson
     meson-parameters: [ --prefix=/ ]
     override-build: |
-      set -eu
       snapcraftctl build
       # remove unused artefacts in the snap (sessions and schemas)
       rm -rf $SNAPCRAFT_PART_INSTALL/share/*sessions $SNAPCRAFT_PART_INSTALL/share/glib-2.0
       # don't support dark variant until it's ready
       rm -r $SNAPCRAFT_PART_INSTALL/share/themes/*-dark
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+    stage:
+      - share/icons
+      - share/gtk2/*/gtk-2.0
+      - share/themes/*/gtk-3*
 
   utils:
     plugin: dump
