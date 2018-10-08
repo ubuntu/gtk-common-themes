@@ -5,6 +5,7 @@ build:snap:
     - export LC_ALL=C.UTF-8
     - export LANG=C.UTF-8
     - export SNAP_ARCH=amd64
+    - apt-get update
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
     - |
        if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
