@@ -52,30 +52,21 @@ slots:
 parts:
   # The base icon theme
   hicolor-icon-theme:
+    after: [utils]
     plugin: autotools
     source: git://anongit.freedesktop.org/xdg/default-icon-theme
     source-type: git
     override-build: &update-icon-cache |
       set -ex
       snapcraftctl build
-      # Don't include app and panel icons to reduce size as they aren't
-      # generally useful in the snap.  If an app does attempt to display
-      # another app's icon by it's name that could be an issue, however that's
-      # a corner case.
-      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
-      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
-      for dir in $SNAPCRAFT_PART_INSTALL/share/icons/*/; do
-        if [ -f $dir/index.theme ]; then
-          gtk-update-icon-cache -q $dir
-        fi
-      done
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
 
     build-packages:
-      - gtk-update-icon-cache
       - gnome-common
 
   # GNOME's default icon theme, also used by Fedora
   adwaita-icon-theme:
+    after: [utils]
     plugin: autotools
     source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
     source-type: git
@@ -83,24 +74,21 @@ parts:
     stage:
       - -share/pkgconfig
 
-    build-packages:
-      - gtk-update-icon-cache
-
   # GNOME's default GTK theme, and Accessibility GTK/icon themes
   gnome-themes-extra:
+    after: [utils]
     plugin: autotools
     source: https://gitlab.gnome.org/GNOME/gnome-themes-extra.git
     source-type: git
-    configflags:
-      - --disable-gtk2-engine
     override-build: *update-icon-cache
 
     stage:
-      - -share/locale
-      - -share/themes/*/gtk-2.0
+      - share/icons
+      - share/themes/*/gtk-2.0
+      - share/themes/*/gtk-3.*
 
     build-packages:
-      - gtk-update-icon-cache
+      - libgtk2.0-dev
       - libgtk-3-dev
       - librsvg2-dev
       - libgdk-pixbuf2.0-dev
@@ -109,6 +97,7 @@ parts:
 
   # Ubuntu's default GTK and icon themes
   ubuntu-themes:
+    after: [utils]
     plugin: nil
     stage-packages:
       - light-themes
@@ -118,20 +107,8 @@ parts:
     override-build: |
       set -ex
       snapcraftctl build
-      # Don't include app and panel icons to reduce size as they aren't
-      # generally useful in the snap.  If an app does attempt to display
-      # another app's icon by it's name that could be an issue, however that's
-      # a corner case.
-      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps |xargs rm -rf
-      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel |xargs rm -rf
-      for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
-        if [ -f $dir/index.theme ]; then
-          gtk-update-icon-cache -q $dir
-        fi
-      done
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/usr/share/icons
 
-    build-packages:
-      - gtk-update-icon-cache
     organize:
       usr/share/icons: share/icons
       usr/share/themes: share/themes
@@ -142,17 +119,18 @@ parts:
       - share/icons/ubuntu-mono-light
       - share/icons/DMZ-Black
       - share/icons/DMZ-White
+      - share/themes/*/gtk-2.0
       - share/themes/*/gtk-3*
 
   # Elementary gtk theme
   elementary-gtk-theme:
+    after: [utils, meson]
     plugin: meson
     source: https://github.com/elementary/stylesheet.git
     source-type: git
-    organize:
-      usr/share/themes: share/themes
-    meson-parameters: [--prefix=/usr]
+    meson-parameters: [--prefix=/]
     stage:
+      - share/themes/*/gtk-2.0
       - share/themes/*/gtk-3*
       - share/themes/*/assets
     build-packages:
@@ -162,32 +140,24 @@ parts:
 
   # Elementary icon theme
   elementary-icon-theme:
+    after: [utils, meson]
     plugin: meson
     source: https://github.com/elementary/icons.git
     source-type: git
     # Set scale_factors to 1, it does some funky linking
-    meson-parameters: [--prefix=/usr, -Dscale_factors=1, -Dvolume_icons=false]
-    organize:
-      usr/share/icons: share/icons
+    meson-parameters: [--prefix=/, -Dscale_factors=1, -Dvolume_icons=false]
     override-build: |
       set -ex
       # Don't include cursors, it does some funky linking
       sed -i.bak -e "s|subdir('cursors')||g" meson.build
       snapcraftctl build
-      # Don't include app and panel icons to reduce size as they aren't
-      # generally useful in the snap.  If an app does attempt to display
-      # another app's icon by it's name that could be an issue, however that's
-      # a corner case.
-      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps |xargs rm -rf
-      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel |xargs rm -rf
-      gtk-update-icon-cache -q $SNAPCRAFT_PART_INSTALL/usr/share/icons/elementary
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
     stage:
       - share/icons/elementary
-    build-packages:
-      - gtk-update-icon-cache
 
   # Arc: common third party theme
   arc-theme:
+    after: [utils]
     plugin: autotools
     source: https://github.com/horst3180/arc-theme.git
     source-type: git
@@ -205,6 +175,7 @@ parts:
   # and copy its relevant content to this snap
   # It's currently only available on amd64 as built by Travis.
   communitheme:
+    after: [utils]
     plugin: nil
     build-packages: [snapd]
     # note: build-snaps causes a segfault in docker
@@ -216,39 +187,47 @@ parts:
       set -eu
       cp -a squashfs-root/share $SNAPCRAFT_PART_INSTALL/
       rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
-      # Don't include app and panel icons to reduce size as they aren't
-      # generally useful in the snap.  If an app does attempt to display
-      # another app's icon by it's name that could be an issue, however that's
-      # a corner case.
-      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
-      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
-    after: [ sassc ]
+    after: [ utils, meson, sassc ]
     source: https://github.com/ubuntu/yaru.git
     plugin: meson
     meson-parameters: [ --prefix=/ ]
     override-build: |
+      set -eu
       snapcraftctl build
       # remove unused artefacts in the snap (sessions and schemas)
       rm -rf $SNAPCRAFT_PART_INSTALL/share/*sessions $SNAPCRAFT_PART_INSTALL/share/glib-2.0
       # don't support dark variant until it's ready
       rm -r $SNAPCRAFT_PART_INSTALL/share/themes/*-dark
-      # Don't include app and panel icons to reduce size as they aren't
-      # generally useful in the snap.  If an app does attempt to display
-      # another app's icon by it's name that could be an issue, however that's
-      # a corner case.
-      find $SNAPCRAFT_PART_INSTALL/share/icons -name apps |xargs rm -rf
-      find $SNAPCRAFT_PART_INSTALL/share/icons -name panel |xargs rm -rf
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+
+  utils:
+    plugin: dump
+    source: utils
+    prime:
+      - -*
+    build-packages:
+      - try: [gtk-update-icon-cache]
+      - else: [libgtk-3-bin]
+
+  meson:
+    source: https://github.com/mesonbuild/meson/releases/download/0.48.0/meson-0.48.0.tar.gz
+    plugin: python
+    prime:
+      - -*
   sassc:
     after: [ libsass ]
     source: https://github.com/sass/sassc.git
     source-tag: 3.5.0
     plugin: autotools
-    override-prime: ""
+    prime:
+      - -*
   libsass:
     source: https://github.com/sass/libsass.git
     source-tag: 3.5.0
     plugin: autotools
-    override-prime: ""
+    prime:
+      - -*
