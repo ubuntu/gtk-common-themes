@@ -1,17 +1,18 @@
 build:snap:
   stage: build
   image: ubuntudesktop/gnome-3-26-1604
-  script: 
+  script:
     - export LC_ALL=C.UTF-8
     - export LANG=C.UTF-8
     - export SNAP_ARCH=amd64
-    - echo $LOGIN | snapcraft login --with -
+    - apt-get update
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
     - |
        if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
+         echo $LOGIN | snapcraft login --with -
          snapcraft push gtk-common-themes*.snap --release edge
+         snapcraft logout
        fi
-    - snapcraft logout
   allow_failure: false
   artifacts:
     paths: ['./*.snap']
