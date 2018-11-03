@@ -197,30 +197,6 @@ parts:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
 
-  # Communitheme: we want the communitheme and this one to be in sync for bug reports
-  # as it's a fast evolving WIP theme.
-  # Download from select channel the corresponding snap (can be from a branch channel)
-  # and copy its relevant content to this snap
-  # It's currently only available on amd64 as built by Travis.
-  communitheme:
-    after: [utils]
-    plugin: nil
-    build-packages: [snapd]
-    # note: build-snaps causes a segfault in docker
-    override-pull: |
-      set -eu
-      snap download communitheme --edge
-      unsquashfs communitheme*.snap
-    override-build: |
-      cp -a squashfs-root/share $SNAPCRAFT_PART_INSTALL/
-      rm -rf $SNAPCRAFT_PART_INSTALL/share/gnome-shell/
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
-    stage:
-      - share/icons
-      - share/gtk2/*/gtk-2.0
-      - share/themes/*/gtk-3*
-
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
     after: [ utils, meson, sassc ]
@@ -233,12 +209,45 @@ parts:
       rm -rf $SNAPCRAFT_PART_INSTALL/share/*sessions $SNAPCRAFT_PART_INSTALL/share/glib-2.0
       # don't support dark variant until it's ready
       rm -r $SNAPCRAFT_PART_INSTALL/share/themes/*-dark
+
+      # Support Communitheme alias
+      mkdir $SNAPCRAFT_PART_INSTALL/share/themes/Communitheme
+      for dir in $SNAPCRAFT_PART_INSTALL/share/themes/Yaru/gtk-*; do
+        base="$(basename $dir)"
+        ln -s ../Yaru/$base $SNAPCRAFT_PART_INSTALL/share/themes/Communitheme/$base
+      done
+      mkdir $SNAPCRAFT_PART_INSTALL/share/icons/communitheme
+      cat << \EOF > $SNAPCRAFT_PART_INSTALL/share/icons/communitheme/index.theme
+      [Icon Theme]
+      Name=communitheme
+      Comment=Alias for Yaru theme
+      Inherits=Yaru,Humanity,hicolor
+      Directories=
+      EOF
+      mkdir $SNAPCRAFT_PART_INSTALL/share/icons/Suru
+      cat << \EOF > $SNAPCRAFT_PART_INSTALL/share/icons/Suru/index.theme
+      [Icon Theme]
+      Name=Suru
+      Comment=Alias for Yaru theme
+      Inherits=Yaru,Humanity,hicolor
+      Directories=
+      EOF
+      mkdir $SNAPCRAFT_PART_INSTALL/share/sounds/communitheme
+      cat << \EOF > $SNAPCRAFT_PART_INSTALL/share/sounds/communitheme/index.theme
+      [Sound Theme]
+      Name=communitheme
+      Comment=Alias for Yaru theme
+      Inherits=Yaru,freedesktop
+      Directories=
+      EOF
+
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
       $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
     stage:
       - share/icons
-      - share/gtk2/*/gtk-2.0
-      - share/themes/*/gtk-3*
+      - share/sounds
+      - share/gtk2
+      - share/themes
 
   utils:
     plugin: dump
