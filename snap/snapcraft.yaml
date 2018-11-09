@@ -1,5 +1,7 @@
 name: gtk-common-themes
 version: git
+version-script: |
+  echo $(git describe --tags)
 architectures:
   - all
 summary: All the (common) themes
