@@ -222,6 +222,7 @@ parts:
       - share/icons
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
+      - share/sounds
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
@@ -241,6 +242,7 @@ parts:
       - share/icons
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
+      - share/sounds
 
   utils:
     plugin: dump
