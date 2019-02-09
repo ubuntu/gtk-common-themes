@@ -202,45 +202,15 @@ parts:
     after: [ utils, meson, sassc ]
     source: https://github.com/ubuntu/yaru.git
     plugin: meson
-    meson-parameters: [ --prefix=/ ]
+    meson-parameters:
+      - --prefix=/
+      - -Dcommunitheme_compat=true
     override-build: |
       snapcraftctl build
       # remove unused artefacts in the snap (sessions and schemas)
       rm -rf $SNAPCRAFT_PART_INSTALL/share/*sessions $SNAPCRAFT_PART_INSTALL/share/glib-2.0
       # don't support dark variant until it's ready
       rm -r $SNAPCRAFT_PART_INSTALL/share/themes/*-dark
-
-      # Support Communitheme alias
-      mkdir $SNAPCRAFT_PART_INSTALL/share/themes/Communitheme
-      for dir in $SNAPCRAFT_PART_INSTALL/share/themes/Yaru/gtk-*; do
-        base="$(basename $dir)"
-        ln -s ../Yaru/$base $SNAPCRAFT_PART_INSTALL/share/themes/Communitheme/$base
-      done
-      mkdir $SNAPCRAFT_PART_INSTALL/share/icons/communitheme
-      cat << \EOF > $SNAPCRAFT_PART_INSTALL/share/icons/communitheme/index.theme
-      [Icon Theme]
-      Name=communitheme
-      Comment=Alias for Yaru theme
-      Inherits=Yaru,Humanity,hicolor
-      Directories=
-      EOF
-      mkdir $SNAPCRAFT_PART_INSTALL/share/icons/Suru
-      cat << \EOF > $SNAPCRAFT_PART_INSTALL/share/icons/Suru/index.theme
-      [Icon Theme]
-      Name=Suru
-      Comment=Alias for Yaru theme
-      Inherits=Yaru,Humanity,hicolor
-      Directories=
-      EOF
-      mkdir $SNAPCRAFT_PART_INSTALL/share/sounds/communitheme
-      cat << \EOF > $SNAPCRAFT_PART_INSTALL/share/sounds/communitheme/index.theme
-      [Sound Theme]
-      Name=communitheme
-      Comment=Alias for Yaru theme
-      Inherits=Yaru,freedesktop
-      Directories=
-      EOF
-
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
       $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
     stage:
