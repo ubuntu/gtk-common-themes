@@ -140,7 +140,7 @@ parts:
 
   # Elementary gtk theme
   elementary-gtk-theme:
-    after: [utils, meson]
+    after: [utils]
     plugin: meson
     source: https://github.com/elementary/stylesheet.git
     source-type: git
@@ -158,7 +158,7 @@ parts:
 
   # Elementary icon theme
   elementary-icon-theme:
-    after: [utils, meson]
+    after: [utils]
     plugin: meson
     source: https://github.com/elementary/icons.git
     source-type: git
@@ -201,12 +201,14 @@ parts:
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
-    after: [ utils, meson, sassc ]
+    after: [utils]
     source: https://github.com/ubuntu/yaru.git
     plugin: meson
     meson-parameters:
       - --prefix=/
       - -Dcommunitheme_compat=true
+    build-packages:
+      - sassc
     override-build: |
       snapcraftctl build
       # remove unused artefacts in the snap (sessions and schemas)
@@ -229,22 +231,3 @@ parts:
     build-packages:
       - try: [gtk-update-icon-cache]
       - else: [libgtk-3-bin]
-
-  meson:
-    source: https://github.com/mesonbuild/meson/releases/download/0.48.0/meson-0.48.0.tar.gz
-    plugin: python
-    prime:
-      - -*
-  sassc:
-    after: [ libsass ]
-    source: https://github.com/sass/sassc.git
-    source-tag: 3.5.0
-    plugin: autotools
-    prime:
-      - -*
-  libsass:
-    source: https://github.com/sass/libsass.git
-    source-tag: 3.5.0
-    plugin: autotools
-    prime:
-      - -*
