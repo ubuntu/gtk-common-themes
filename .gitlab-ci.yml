@@ -1,12 +1,13 @@
 build:snap:
   stage: build
-  image: ubuntudesktop/gnome-3-26-1604
+  image: ubuntu:18.04
   script:
     - export LC_ALL=C.UTF-8
     - export LANG=C.UTF-8
     - export SNAP_ARCH=amd64
     - export SNAPCRAFT_BUILD_INFO=1
     - apt-get update
+    - apt-get install -y snapcraft
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
     - |
        if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
