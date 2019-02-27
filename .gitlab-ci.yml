@@ -1,3 +1,10 @@
+# Variables used by the build job.  These are usually overriden by the
+# project or trigger request.
+variables:
+  LOGIN: ""
+  RELEASE_CHANNEL: "edge"
+  YARU_SOURCE_COMMIT: ""
+
 build:snap:
   stage: build
   image: ubuntu:18.04
@@ -8,11 +15,15 @@ build:snap:
     - export SNAPCRAFT_BUILD_INFO=1
     - apt-get update
     - apt-get install -y snapcraft
+    - |
+      if [ -n "$YARU_SOURCE_COMMIT" ]; then
+        sed -i "/^  yaru:/a \\    source-commit: ${YARU_SOURCE_COMMIT}" snap/snapcraft.yaml
+      fi
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
     - |
        if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
-         echo $LOGIN | snapcraft login --with -
-         snapcraft push gtk-common-themes*.snap --release edge
+         echo "$LOGIN" | snapcraft login --with -
+         snapcraft push gtk-common-themes*.snap --release "$RELEASE_CHANNEL"
          snapcraft logout
        fi
   allow_failure: false
