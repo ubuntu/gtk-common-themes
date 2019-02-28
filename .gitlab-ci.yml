@@ -14,10 +14,18 @@ build:snap:
     - export SNAP_ARCH=amd64
     - export SNAPCRAFT_BUILD_INFO=1
     - apt-get update
-    - apt-get install -y snapcraft
+    - apt-get install -y git snapcraft
     - |
       if [ -n "$YARU_SOURCE_COMMIT" ]; then
-        sed -i "/^  yaru:/a \\    source-commit: ${YARU_SOURCE_COMMIT}" snap/snapcraft.yaml
+        # Ideally we'd just pass the the revision ID to snapcraft as
+        # source-commit.  However, that seems to fail for revisions
+        # not in master:
+        #   https://bugs.launchpad.net/snapcraft/+bug/1817970
+        # Instead clone the repo ourselves and point at the local copy.
+        git clone https://github.com/ubuntu/yaru.git yaru
+        git -C yaru fetch origin "+${YARU_SOURCE_COMMIT}:"
+        git -C yaru reset --hard "${YARU_SOURCE_COMMIT}"
+        sed -i "s|https://github.com/ubuntu/yaru.git|./yaru|" snap/snapcraft.yaml
       fi
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
     - |
