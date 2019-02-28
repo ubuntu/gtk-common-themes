@@ -24,6 +24,8 @@ slots:
         - $SNAP/share/gtk2/Arc
         - $SNAP/share/gtk2/Arc-Dark
         - $SNAP/share/gtk2/Arc-Darker
+        - $SNAP/share/gtk2/Breeze
+        - $SNAP/share/gtk2/Breeze-Dark
         - $SNAP/share/gtk2/Communitheme
         - $SNAP/share/gtk2/Yaru
         - $SNAP/share/gtk2/elementary
@@ -39,6 +41,8 @@ slots:
         - $SNAP/share/themes/Arc
         - $SNAP/share/themes/Arc-Dark
         - $SNAP/share/themes/Arc-Darker
+        - $SNAP/share/themes/Breeze
+        - $SNAP/share/themes/Breeze-Dark
         - $SNAP/share/themes/Communitheme
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/elementary
@@ -198,6 +202,35 @@ parts:
     stage:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
+
+  # Breeze: KDE's default theme
+  breeze-gtk:
+    after: [utils]
+    source: https://anongit.kde.org/breeze-gtk.git
+    source-type: git
+    plugin: cmake
+    configflags:
+      - -DCMAKE_CXX_STANDARD=11
+    build-packages:
+      - extra-cmake-modules
+      - gtk2-engines-pixbuf
+      - kde-style-breeze
+      - python3
+      - python3-cairo
+      - qtbase5-dev
+    override-build: |
+      export QT_SELECT=qt5
+      # Add a stub cmake config pointing at the color scheme files
+      echo 'set(Breeze_FOUND TRUE)' > ${SNAPCRAFT_PART_SRC}/cmake/FindBreeze.cmake
+      echo 'set(BREEZE_COLOR_INSTALL_ROOT "/usr/share/color-schemes")' >> ${SNAPCRAFT_PART_SRC}/cmake/FindBreeze.cmake
+      snapcraftctl build
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      # Make assets available to both GTK 3 and GTK 2 themes after split
+      cp -a $SNAPCRAFT_PART_INSTALL/share/themes/Breeze/assets $SNAPCRAFT_PART_INSTALL/share/gtk2/Breeze/
+      cp -a $SNAPCRAFT_PART_INSTALL/share/themes/Breeze-Dark/assets $SNAPCRAFT_PART_INSTALL/share/gtk2/Breeze-Dark/
+    stage:
+      - share/gtk2
+      - share/themes
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
