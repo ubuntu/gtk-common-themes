@@ -2,6 +2,7 @@ name: gtk-common-themes
 version: git
 version-script: |
   echo $(git describe --tags 2>/dev/null || echo 0.1)
+base: core18
 architectures:
   - all
 summary: All the (common) themes
