@@ -28,6 +28,7 @@ slots:
         - $SNAP/share/gtk2/Breeze-Dark
         - $SNAP/share/gtk2/Communitheme
         - $SNAP/share/gtk2/Yaru
+        - $SNAP/share/gtk2/Yaru-dark
         - $SNAP/share/gtk2/elementary
   gtk-3-themes:
     interface: content
@@ -45,6 +46,7 @@ slots:
         - $SNAP/share/themes/Breeze-Dark
         - $SNAP/share/themes/Communitheme
         - $SNAP/share/themes/Yaru
+        - $SNAP/share/themes/Yaru-dark
         - $SNAP/share/themes/elementary
   icon-themes:
     interface: content
@@ -244,10 +246,6 @@ parts:
       - sassc
     override-build: |
       snapcraftctl build
-      # remove unused artefacts in the snap (sessions and schemas)
-      rm -rf $SNAPCRAFT_PART_INSTALL/share/*sessions $SNAPCRAFT_PART_INSTALL/share/glib-2.0
-      # don't support dark variant until it's ready
-      rm -r $SNAPCRAFT_PART_INSTALL/share/themes/*-dark
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
       $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
     stage:
