@@ -8,6 +8,7 @@ summary: All the (common) themes
 description: |
   A snap that exports the GTK and icon themes used on various Linux distros.
 
+base: core18
 grade: stable
 confinement: strict
 
@@ -30,6 +31,15 @@ slots:
         - $SNAP/share/gtk2/Yaru
         - $SNAP/share/gtk2/Yaru-dark
         - $SNAP/share/gtk2/elementary
+        - $SNAP/share/gtk2/Ambiant-MATE
+        - $SNAP/share/gtk2/Ambiant-MATE-Dark
+        - $SNAP/share/gtk2/Radiant-MATE
+        - $SNAP/share/gtk2/Matcha-aliz
+        - $SNAP/share/gtk2/Matcha-azul
+        - $SNAP/share/gtk2/Matcha-dark-aliz
+        - $SNAP/share/gtk2/Matcha-dark-azul
+        - $SNAP/share/gtk2/Matcha-dark-sea
+        - $SNAP/share/gtk2/Matcha-sea
   gtk-3-themes:
     interface: content
     source:
@@ -48,6 +58,15 @@ slots:
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/Yaru-dark
         - $SNAP/share/themes/elementary
+        - $SNAP/share/themes/Ambiant-MATE
+        - $SNAP/share/themes/Ambiant-MATE-Dark
+        - $SNAP/share/themes/Radiant-MATE
+        - $SNAP/share/themes/Matcha-aliz
+        - $SNAP/share/themes/Matcha-azul
+        - $SNAP/share/themes/Matcha-dark-aliz
+        - $SNAP/share/themes/Matcha-dark-azul
+        - $SNAP/share/themes/Matcha-dark-sea
+        - $SNAP/share/themes/Matcha-sea
   icon-themes:
     interface: content
     source:
@@ -65,6 +84,13 @@ slots:
         - $SNAP/share/icons/Suru
         - $SNAP/share/icons/Yaru
         - $SNAP/share/icons/elementary
+        - $SNAP/share/icons/Ambiant-MATE
+        - $SNAP/share/icons/Radiant-MATE
+        - $SNAP/share/icons/Papirus-Adapta-Maia
+        - $SNAP/share/icons/Papirus-Adapta-Nokto-Maia
+        - $SNAP/share/icons/Papirus-Dark-Maia
+        - $SNAP/share/icons/Papirus-Light-Maia
+        - $SNAP/share/icons/Papirus-Maia
   sound-themes:
     interface: content
     source:
@@ -253,6 +279,85 @@ parts:
       - share/sounds
       - share/gtk2
       - share/themes
+
+  # Ubuntu MATE gtk theme
+  ubuntu-mate-gtk-theme:
+    after: [utils]
+    plugin: dump
+    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-themes_18.04.11_all.deb
+    override-build: |
+      snapcraftctl build
+      mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
+      mv $SNAPCRAFT_PART_INSTALL/usr/share/themes/* $SNAPCRAFT_PART_INSTALL/share/themes/
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+    stage:
+      - share/gtk2/*/gtk-2.0
+      - share/themes/*/gtk-3*
+
+  # Ubuntu MATE icon theme
+  ubuntu-mate-icon-theme:
+    after: [utils]
+    plugin: dump
+    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-icon-themes_18.04.11_all.deb
+    override-build: |
+      snapcraftctl build
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap. If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however
+      # that's a corner case.
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps | xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
+      for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
+        if [ -f $dir/index.theme ]; then
+          gtk-update-icon-cache -q $dir
+        fi
+      done
+
+      mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
+      mv $SNAPCRAFT_PART_INSTALL/usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+    stage:
+      - share/icons/Ambiant-MATE
+      - share/icons/Radiant-MATE
+
+  # Matcha gtk theme - Manjaro default
+  matcha-gtk-theme:
+    after: [utils]
+    plugin: nil
+    source: https://github.com/vinceliuice/matcha/archive/2019_05_09.tar.gz
+    override-build: |
+      snapcraftctl build
+      mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
+      ./Install -d $SNAPCRAFT_PART_INSTALL/share/themes
+      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+    stage:
+      - share/gtk2/*/gtk-2.0
+      - share/themes/*/gtk-3*
+
+  # Papirus Maia icons - Majaro default
+  pairus-maia-icon-theme:
+    after: [utils]
+    plugin: cmake
+    source: https://github.com/Ste74/papirus-maia-icon-theme.git
+    override-build: |
+      snapcraftctl build
+      # Don't include app and panel icons to reduce size as they aren't
+      # generally useful in the snap. If an app does attempt to display
+      # another app's icon by it's name that could be an issue, however
+      # that's a corner case.
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps | xargs rm -rf
+      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
+      for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
+        if [ -f $dir/index.theme ]; then
+          gtk-update-icon-cache -q $dir
+        fi
+      done
+
+      mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
+      mv $SNAPCRAFT_PART_INSTALL/usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
+      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+    stage:
+      - share/icons/Papirus-*
 
   utils:
     plugin: dump
