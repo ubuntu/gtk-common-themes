@@ -30,6 +30,7 @@ slots:
         - $SNAP/share/gtk2/Communitheme
         - $SNAP/share/gtk2/Yaru
         - $SNAP/share/gtk2/Yaru-dark
+        - $SNAP/share/gtk2/Yaru-light
         - $SNAP/share/gtk2/elementary
         - $SNAP/share/gtk2/Ambiant-MATE
         - $SNAP/share/gtk2/Ambiant-MATE-Dark
@@ -57,6 +58,7 @@ slots:
         - $SNAP/share/themes/Communitheme
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/Yaru-dark
+        - $SNAP/share/themes/Yaru-light
         - $SNAP/share/themes/elementary
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
