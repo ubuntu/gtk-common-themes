@@ -28,6 +28,8 @@ slots:
         - $SNAP/share/gtk2/Breeze
         - $SNAP/share/gtk2/Breeze-Dark
         - $SNAP/share/gtk2/Communitheme
+        - $SNAP/share/gtk2/Communitheme-dark
+        - $SNAP/share/gtk2/Communitheme-light
         - $SNAP/share/gtk2/Yaru
         - $SNAP/share/gtk2/Yaru-dark
         - $SNAP/share/gtk2/Yaru-light
@@ -56,6 +58,8 @@ slots:
         - $SNAP/share/themes/Breeze
         - $SNAP/share/themes/Breeze-Dark
         - $SNAP/share/themes/Communitheme
+        - $SNAP/share/themes/Communitheme-dark
+        - $SNAP/share/themes/Communitheme-light
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/Yaru-dark
         - $SNAP/share/themes/Yaru-light
@@ -266,6 +270,7 @@ parts:
   yaru:
     after: [utils]
     source: https://github.com/ubuntu/yaru.git
+    source-depth: 1
     plugin: meson
     meson-parameters:
       - --prefix=/
