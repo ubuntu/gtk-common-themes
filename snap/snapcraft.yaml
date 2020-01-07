@@ -97,6 +97,8 @@ slots:
         - $SNAP/share/icons/Papirus-Dark-Maia
         - $SNAP/share/icons/Papirus-Light-Maia
         - $SNAP/share/icons/Papirus-Maia
+        - $SNAP/share/icons/breeze_cursors
+        - $SNAP/share/icons/Breeze_Snow
   sound-themes:
     interface: content
     source:
@@ -265,6 +267,20 @@ parts:
     stage:
       - share/gtk2
       - share/themes
+
+  # KDE's Breeze cursor themes
+  breeze-icon:
+    after: [utils]
+    source: https://github.com/KDE/breeze.git
+    source-type: git
+    plugin: dump
+    organize:
+      'cursors/Breeze/Breeze/cursors' : 'share/icons/breeze_cursors/cursors'
+      'cursors/Breeze/Breeze/index.theme' : 'share/icons/breeze_cursors/index.theme'
+      'cursors/Breeze_Snow/Breeze_Snow/cursors' : 'share/icons/Breeze_Snow/cursors'
+      'cursors/Breeze_Snow/Breeze_Snow/index.theme' : 'share/icons/Breeze_Snow/index.theme'
+    stage:
+      - share/icons
 
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
