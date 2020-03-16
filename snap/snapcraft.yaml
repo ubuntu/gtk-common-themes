@@ -303,7 +303,7 @@ parts:
       - share/gtk2
       - share/themes
     prime:
-      - -share/themes/Yaru/gnome-shell
+      - -share/themes/*/gnome-shell
 
   # Ubuntu MATE gtk theme
   ubuntu-mate-gtk-theme:
