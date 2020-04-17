@@ -43,6 +43,8 @@ slots:
         - $SNAP/share/gtk2/Matcha-dark-azul
         - $SNAP/share/gtk2/Matcha-dark-sea
         - $SNAP/share/gtk2/Matcha-sea
+        - $SNAP/share/gtk2/Materia-compact
+        - $SNAP/share/gtk2/Materia-dark-compact
   gtk-3-themes:
     interface: content
     source:
@@ -73,6 +75,12 @@ slots:
         - $SNAP/share/themes/Matcha-dark-azul
         - $SNAP/share/themes/Matcha-dark-sea
         - $SNAP/share/themes/Matcha-sea
+        - $SNAP/share/themes/Materia
+        - $SNAP/share/themes/Materia-compact
+        - $SNAP/share/themes/Materia-dark
+        - $SNAP/share/themes/Materia-dark-compact
+        - $SNAP/share/themes/Materia-light
+        - $SNAP/share/themes/Materia-light-compact
   icon-themes:
     interface: content
     source:
@@ -383,6 +391,19 @@ parts:
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
     stage:
       - share/icons/Papirus-*
+
+  # Materia icons - Ubuntu Studio default
+  materia-gtk-theme:
+    after: [utils]
+    plugin: nil
+    source: https://github.com/nana-4/materia-theme.git
+    source-tag: v20200320 # Latest master fails to build
+    override-build: |
+        mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
+        ./install.sh --dest $SNAPCRAFT_PART_INSTALL/share/themes
+    stage:
+      - share/gtk2/*/gtk-2.0
+      - share/themes/*/gtk-3*
 
   utils:
     plugin: dump
