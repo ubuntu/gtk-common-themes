@@ -334,11 +334,8 @@ parts:
     source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-icon-themes_18.04.11_all.deb
     override-build: |
       snapcraftctl build
-      # Don't include app and panel icons to reduce size as they aren't
-      # generally useful in the snap. If an app does attempt to display
-      # another app's icon by it's name that could be an issue, however
-      # that's a corner case.
-      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps | xargs rm -rf
+      # Don't include panel icons to reduce size as they aren't
+      # generally useful in the snap.
       find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
       for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
@@ -375,10 +372,7 @@ parts:
     override-build: |
       snapcraftctl build
       # Don't include app and panel icons to reduce size as they aren't
-      # generally useful in the snap. If an app does attempt to display
-      # another app's icon by it's name that could be an issue, however
-      # that's a corner case.
-      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name apps | xargs rm -rf
+      # generally useful in the snap.
       find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
       for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
         if [ -f $dir/index.theme ]; then
