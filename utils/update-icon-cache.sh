@@ -6,7 +6,9 @@ basedir="$1"
 
 # Don't include panel icons to reduce size as they aren't
 # generally useful in the snap.
-find "$basedir" -name panel -exec rm -rf {} +
+if [ -d "$basedir" ]; then
+    find "$basedir" -name panel -exec rm -rf {} +
+fi
 
 for dir in "$basedir"/*/; do
     if [ -f "$dir/index.theme" ]; then
