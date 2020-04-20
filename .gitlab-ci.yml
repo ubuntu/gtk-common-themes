@@ -28,12 +28,6 @@ build:snap:
         sed -i "s|https://github.com/ubuntu/yaru.git|./yaru|" snap/snapcraft.yaml
       fi
     - SNAPCRAFT_SETUP_CORE=1 snapcraft
-    - |
-       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
-         echo "$LOGIN" | snapcraft login --with -
-         snapcraft push gtk-common-themes*.snap --release "$RELEASE_CHANNEL"
-         snapcraft logout
-       fi
   allow_failure: false
   artifacts:
     paths: ['./*.snap']
