@@ -307,6 +307,8 @@ parts:
     meson-parameters:
       - --prefix=/
       - -Dcommunitheme_compat=true
+      - -Dgnome-shell=false
+      - -Dsessions=false
     build-packages:
       - sassc
     override-build: |
@@ -318,8 +320,6 @@ parts:
       - share/sounds
       - share/gtk2
       - share/themes
-    prime:
-      - -share/themes/*/gnome-shell
 
   # Ubuntu MATE gtk theme
   ubuntu-mate-gtk-theme:
