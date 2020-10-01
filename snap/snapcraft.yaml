@@ -121,6 +121,7 @@ slots:
       read:
         - $SNAP/share/sounds/communitheme
         - $SNAP/share/sounds/Yaru
+        - $SNAP/share/sounds/freedesktop
 
 parts:
   # The base icon theme
@@ -179,6 +180,7 @@ parts:
       - humanity-icon-theme
       - ubuntu-mono
       - dmz-cursor-theme
+      - sound-theme-freedesktop
     override-build: |
       snapcraftctl build
       mv $SNAPCRAFT_PART_INSTALL/usr/share $SNAPCRAFT_PART_INSTALL/share
@@ -193,6 +195,7 @@ parts:
       - share/icons/DMZ-White
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
+      - share/sounds/freedesktop
 
   # Elementary gtk theme
   elementary-gtk-theme:
