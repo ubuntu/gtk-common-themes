@@ -203,6 +203,7 @@ parts:
     plugin: meson
     source: https://github.com/elementary/stylesheet.git
     source-type: git
+    source-tag: 5.4.2
     meson-parameters: [--prefix=/]
     override-build: |
       snapcraftctl build
