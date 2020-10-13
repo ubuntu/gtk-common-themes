@@ -307,7 +307,7 @@ parts:
     after: [utils]
     source: https://github.com/ubuntu/yaru.git
     source-depth: 1
-    source-branch: ubuntu/focal
+    source-branch: ubuntu/groovy
     plugin: meson
     meson-parameters:
       - --prefix=/
