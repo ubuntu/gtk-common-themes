@@ -1,7 +1,5 @@
 name: gtk-common-themes
-version: git
-version-script: |
-  echo $(git describe --tags 2>/dev/null || echo 0.1)
+adopt-info: version-script
 architectures:
   - all
 summary: All the (common) themes
@@ -127,6 +125,14 @@ slots:
         - $SNAP/share/sounds/freedesktop
 
 parts:
+  version-script:
+    plugin: nil
+    source: .
+    build-packages:
+      - git
+    override-build: |
+      snapcraftctl set-version $(git -C $SNAPCRAFT_PROJECT_DIR describe --tags 2>/dev/null || echo 0.1)
+
   # The base icon theme
   hicolor-icon-theme:
     after: [utils]
