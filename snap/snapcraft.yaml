@@ -115,6 +115,9 @@ slots:
         - $SNAP/share/icons/elementary-xfce-dark
         - $SNAP/share/icons/elementary-xfce-darker
         - $SNAP/share/icons/elementary-xfce-darkest
+        - $SNAP/share/icons/handhelds
+        - $SNAP/share/icons/redglass
+        - $SNAP/share/icons/whiteglass
   sound-themes:
     interface: content
     source:
@@ -448,6 +451,18 @@ parts:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
 
+  xcursor-themes:
+    plugin: nil
+    stage-packages:
+      - xcursor-themes
+    override-build: |
+      mv $SNAPCRAFT_PART_INSTALL/usr/share $SNAPCRAFT_PART_INSTALL/share
+    stage:
+      - share/icons/handhelds
+      - share/icons/redglass
+      - share/icons/whiteglass
+
+  # Ubuntu's default GTK and icon themes
   utils:
     plugin: dump
     source: utils
