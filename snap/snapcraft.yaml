@@ -87,6 +87,7 @@ slots:
     interface: content
     source:
       read:
+        - $SNAP/share/icons/default
         - $SNAP/share/icons/Adwaita
         - $SNAP/share/icons/hicolor
         - $SNAP/share/icons/HighContrast
@@ -468,7 +469,16 @@ parts:
       - share/icons/redglass
       - share/icons/whiteglass
 
-  # Ubuntu's default GTK and icon themes
+  # Define a default, fallback cursor theme in case the requested theme
+  # isn't included in gtk-common-themes (LP: #1900334).
+  default-cursor-theme:
+    after: [ubuntu-themes]
+    plugin: nil
+    override-prime: |
+      mkdir -p $SNAPCRAFT_PRIME/share/icons/default
+      cd $SNAPCRAFT_PRIME/share/icons/default
+      ln -s ../DMZ-White/cursor.theme index.theme
+
   utils:
     plugin: dump
     source: utils
