@@ -274,6 +274,7 @@ parts:
     after: [utils]
     source: https://anongit.kde.org/breeze-gtk.git
     source-type: git
+    source-tag: v5.21.4
     plugin: cmake
     configflags:
       - -DCMAKE_CXX_STANDARD=11
@@ -317,7 +318,7 @@ parts:
     after: [utils]
     source: https://github.com/ubuntu/yaru.git
     source-depth: 1
-    source-branch: ubuntu/groovy
+    source-branch: ubuntu/hirsute
     plugin: meson
     meson-parameters:
       - --prefix=/
