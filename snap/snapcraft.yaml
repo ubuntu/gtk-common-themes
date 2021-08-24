@@ -6,7 +6,11 @@ summary: All the (common) themes
 description: |
   A snap that exports the GTK and icon themes used on various Linux distros.
 
-base: core18
+# We build against Ubuntu 18.04 packages, but use the "bare" base as
+# we don't want to force installation of a large base snap.
+build-base: core18
+base: bare
+
 grade: stable
 confinement: strict
 
