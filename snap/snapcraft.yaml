@@ -279,7 +279,6 @@ parts:
     after: [utils]
     source: https://anongit.kde.org/breeze-gtk.git
     source-type: git
-    source-tag: v5.21.4
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=
