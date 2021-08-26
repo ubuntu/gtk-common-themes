@@ -6,7 +6,11 @@ summary: All the (common) themes
 description: |
   A snap that exports the GTK and icon themes used on various Linux distros.
 
-base: core18
+# We build against Ubuntu 20.04 packages, but use the "bare" base as
+# we don't want to force installation of a large base snap.
+build-base: core20
+base: bare
+
 grade: stable
 confinement: strict
 
@@ -138,6 +142,8 @@ parts:
   hicolor-icon-theme:
     after: [utils]
     plugin: autotools
+    autotools-configure-parameters:
+      - --prefix=/
     source: git://anongit.freedesktop.org/xdg/default-icon-theme
     source-type: git
     override-build: |
@@ -150,6 +156,8 @@ parts:
   adwaita-icon-theme:
     after: [utils]
     plugin: autotools
+    autotools-configure-parameters:
+      - --prefix=/
     source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
     source-type: git
     override-build: |
@@ -162,6 +170,8 @@ parts:
   gnome-themes-extra:
     after: [utils]
     plugin: autotools
+    autotools-configure-parameters:
+      - --prefix=/
     source: https://gitlab.gnome.org/GNOME/gnome-themes-extra.git
     source-type: git
     override-build: |
@@ -236,7 +246,7 @@ parts:
     meson-parameters: [--prefix=/, -Dscale_factors=1, -Dvolume_icons=false]
     override-build: |
       # Don't include cursors, it does some funky linking
-      sed -i.bak -e "s|subdir('cursors')||g" meson.build
+      sed -i.bak -e "s|subdir('cursors')||g" $SNAPCRAFT_PART_SRC/meson.build
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
     stage:
@@ -245,17 +255,12 @@ parts:
   # Arc: common third party theme
   arc-theme:
     after: [utils]
-    plugin: autotools
-    source: https://github.com/NicoHood/arc-theme.git
+    plugin: meson
+    source: https://github.com/jnsh/arc-theme.git
     source-type: git
-    configflags:
-      - --disable-cinnamon
-      - --disable-gnome-shell
-      - --disable-metacity
-      - --disable-unity
-      - --disable-xfwm
-      - --disable-plank
-      - --disable-openbox
+    meson-parameters:
+      - --prefix=/
+      - -Dthemes=gtk2,gtk3
     build-packages:
       - libgtk-3-dev
       - libglib2.0-dev
@@ -274,9 +279,9 @@ parts:
     after: [utils]
     source: https://anongit.kde.org/breeze-gtk.git
     source-type: git
-    source-tag: v5.21.4
     plugin: cmake
-    configflags:
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=
       - -DCMAKE_CXX_STANDARD=11
     build-packages:
       - extra-cmake-modules
@@ -361,11 +366,6 @@ parts:
       # Don't include panel icons to reduce size as they aren't
       # generally useful in the snap.
       find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
-      for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
-        if [ -f $dir/index.theme ]; then
-          gtk-update-icon-cache -q $dir
-        fi
-      done
 
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
       mv $SNAPCRAFT_PART_INSTALL/usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
@@ -398,11 +398,6 @@ parts:
       # Don't include app and panel icons to reduce size as they aren't
       # generally useful in the snap.
       find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
-      for dir in $SNAPCRAFT_PART_INSTALL/usr/share/icons/*/; do
-        if [ -f $dir/index.theme ]; then
-          gtk-update-icon-cache -q $dir
-        fi
-      done
 
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
       mv $SNAPCRAFT_PART_INSTALL/usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
@@ -432,6 +427,8 @@ parts:
   elementary-xfce-icon-theme:
     after: [utils]
     plugin: autotools
+    autotools-configure-parameters:
+      - --prefix=/
     source: https://github.com/shimmerproject/elementary-xfce.git
     source-type: git
     override-build: |

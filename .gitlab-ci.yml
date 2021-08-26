@@ -7,7 +7,7 @@ variables:
 
 build:snap:
   stage: build
-  image: ubuntudesktop/gnome-3-28-1804
+  image: ubuntudesktop/gnome-3-38-2004
   script:
     - export LC_ALL=C.UTF-8
     - export LANG=C.UTF-8
