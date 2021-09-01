@@ -1,7 +1,8 @@
 name: gtk-common-themes
 adopt-info: version-script
 architectures:
-  - all
+  - build-on: amd64
+    run-on: all
 summary: All the (common) themes
 description: |
   A snap that exports the GTK and icon themes used on various Linux distros.
