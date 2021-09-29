@@ -35,7 +35,6 @@ slots:
         - $SNAP/share/gtk2/Communitheme-light
         - $SNAP/share/gtk2/Yaru
         - $SNAP/share/gtk2/Yaru-dark
-        - $SNAP/share/gtk2/Yaru-light
         - $SNAP/share/gtk2/elementary
         - $SNAP/share/gtk2/Ambiant-MATE
         - $SNAP/share/gtk2/Ambiant-MATE-Dark
@@ -69,7 +68,6 @@ slots:
         - $SNAP/share/themes/Communitheme-light
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/Yaru-dark
-        - $SNAP/share/themes/Yaru-light
         - $SNAP/share/themes/elementary
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
@@ -324,7 +322,7 @@ parts:
     after: [utils]
     source: https://github.com/ubuntu/yaru.git
     source-depth: 1
-    source-branch: ubuntu/hirsute
+    source-branch: ubuntu/impish
     plugin: meson
     meson-parameters:
       - --prefix=/
