@@ -430,6 +430,7 @@ parts:
       - --prefix=/
     source: https://github.com/shimmerproject/elementary-xfce.git
     source-type: git
+    source-tag: v0.15.2
     override-build: |
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
