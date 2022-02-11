@@ -30,9 +30,6 @@ slots:
         - $SNAP/share/gtk2/Arc-Darker
         - $SNAP/share/gtk2/Breeze
         - $SNAP/share/gtk2/Breeze-Dark
-        - $SNAP/share/gtk2/Communitheme
-        - $SNAP/share/gtk2/Communitheme-dark
-        - $SNAP/share/gtk2/Communitheme-light
         - $SNAP/share/gtk2/Yaru
         - $SNAP/share/gtk2/Yaru-dark
         - $SNAP/share/gtk2/elementary
@@ -63,9 +60,6 @@ slots:
         - $SNAP/share/themes/Arc-Darker
         - $SNAP/share/themes/Breeze
         - $SNAP/share/themes/Breeze-Dark
-        - $SNAP/share/themes/Communitheme
-        - $SNAP/share/themes/Communitheme-dark
-        - $SNAP/share/themes/Communitheme-light
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/Yaru-dark
         - $SNAP/share/themes/elementary
@@ -100,8 +94,6 @@ slots:
         - $SNAP/share/icons/ubuntu-mono-light
         - $SNAP/share/icons/DMZ-Black
         - $SNAP/share/icons/DMZ-White
-        - $SNAP/share/icons/communitheme
-        - $SNAP/share/icons/Suru
         - $SNAP/share/icons/Yaru
         - $SNAP/share/icons/elementary
         - $SNAP/share/icons/Ambiant-MATE
@@ -124,7 +116,6 @@ slots:
     interface: content
     source:
       read:
-        - $SNAP/share/sounds/communitheme
         - $SNAP/share/sounds/Yaru
         - $SNAP/share/sounds/freedesktop
 
@@ -326,7 +317,6 @@ parts:
     plugin: meson
     meson-parameters:
       - --prefix=/
-      - -Dcommunitheme_compat=true
       - -Dgnome-shell=false
       - -Dsessions=false
     build-packages:
