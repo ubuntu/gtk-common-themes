@@ -31,21 +31,25 @@ slots:
         - $SNAP/share/gtk2/Breeze
         - $SNAP/share/gtk2/Breeze-Dark
         - $SNAP/share/gtk2/Yaru
-        - $SNAP/share/gtk2/Yaru-aqua
+        - $SNAP/share/gtk2/Yaru-bark
         - $SNAP/share/gtk2/Yaru-blue
-        - $SNAP/share/gtk2/Yaru-green
-        - $SNAP/share/gtk2/Yaru-pink
+        - $SNAP/share/gtk2/Yaru-magenta
+        - $SNAP/share/gtk2/Yaru-olive
+        - $SNAP/share/gtk2/Yaru-prussiangreen
         - $SNAP/share/gtk2/Yaru-purple
         - $SNAP/share/gtk2/Yaru-red
-        - $SNAP/share/gtk2/Yaru-yellow
+        - $SNAP/share/gtk2/Yaru-sage
+        - $SNAP/share/gtk2/Yaru-viridian
         - $SNAP/share/gtk2/Yaru-dark
-        - $SNAP/share/gtk2/Yaru-aqua-dark
+        - $SNAP/share/gtk2/Yaru-bark-dark
         - $SNAP/share/gtk2/Yaru-blue-dark
-        - $SNAP/share/gtk2/Yaru-green-dark
-        - $SNAP/share/gtk2/Yaru-pink-dark
+        - $SNAP/share/gtk2/Yaru-magenta-dark
+        - $SNAP/share/gtk2/Yaru-olive-dark
+        - $SNAP/share/gtk2/Yaru-prussiangreen-dark
         - $SNAP/share/gtk2/Yaru-purple-dark
         - $SNAP/share/gtk2/Yaru-red-dark
-        - $SNAP/share/gtk2/Yaru-yellow-dark
+        - $SNAP/share/gtk2/Yaru-sage-dark
+        - $SNAP/share/gtk2/Yaru-viridian-dark
         - $SNAP/share/gtk2/elementary
         - $SNAP/share/gtk2/Ambiant-MATE
         - $SNAP/share/gtk2/Ambiant-MATE-Dark
@@ -75,21 +79,29 @@ slots:
         - $SNAP/share/themes/Breeze
         - $SNAP/share/themes/Breeze-Dark
         - $SNAP/share/themes/Yaru
-        - $SNAP/share/themes/Yaru-aqua
+        - $SNAP/share/themes/Yaru-hdpi
+        - $SNAP/share/themes/Yaru-xhdpi
+        - $SNAP/share/themes/Yaru-bark
         - $SNAP/share/themes/Yaru-blue
-        - $SNAP/share/themes/Yaru-green
-        - $SNAP/share/themes/Yaru-pink
+        - $SNAP/share/themes/Yaru-magenta
+        - $SNAP/share/themes/Yaru-olive
+        - $SNAP/share/themes/Yaru-prussiangreen
         - $SNAP/share/themes/Yaru-purple
         - $SNAP/share/themes/Yaru-red
-        - $SNAP/share/themes/Yaru-yellow
+        - $SNAP/share/themes/Yaru-sage
+        - $SNAP/share/themes/Yaru-viridian
         - $SNAP/share/themes/Yaru-dark
-        - $SNAP/share/themes/Yaru-aqua-dark
+        - $SNAP/share/themes/Yaru-dark-hdpi
+        - $SNAP/share/themes/Yaru-dark-xhdpi
+        - $SNAP/share/themes/Yaru-bark-dark
         - $SNAP/share/themes/Yaru-blue-dark
-        - $SNAP/share/themes/Yaru-green-dark
-        - $SNAP/share/themes/Yaru-pink-dark
+        - $SNAP/share/themes/Yaru-magenta-dark
+        - $SNAP/share/themes/Yaru-olive-dark
+        - $SNAP/share/themes/Yaru-prussiangreen-dark
         - $SNAP/share/themes/Yaru-purple-dark
         - $SNAP/share/themes/Yaru-red-dark
-        - $SNAP/share/themes/Yaru-yellow-dark
+        - $SNAP/share/themes/Yaru-sage-dark
+        - $SNAP/share/themes/Yaru-viridian-dark
         - $SNAP/share/themes/elementary
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
@@ -339,10 +351,11 @@ parts:
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
     after: [utils]
-    source: https://github.com/ubuntu/yaru.git
+    #source: https://github.com/ubuntu/yaru.git
+    source: https://github.com/3v1n0/yaru.git
     source-depth: 1
+    source-branch: accents-tuning
     #source-branch: ubuntu/impish
-    source-branch: gtk_accent_colors
     plugin: meson
     meson-parameters:
       - --prefix=/
