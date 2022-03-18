@@ -31,7 +31,21 @@ slots:
         - $SNAP/share/gtk2/Breeze
         - $SNAP/share/gtk2/Breeze-Dark
         - $SNAP/share/gtk2/Yaru
+        - $SNAP/share/gtk2/Yaru-aqua
+        - $SNAP/share/gtk2/Yaru-blue
+        - $SNAP/share/gtk2/Yaru-green
+        - $SNAP/share/gtk2/Yaru-pink
+        - $SNAP/share/gtk2/Yaru-purple
+        - $SNAP/share/gtk2/Yaru-red
+        - $SNAP/share/gtk2/Yaru-yellow
         - $SNAP/share/gtk2/Yaru-dark
+        - $SNAP/share/gtk2/Yaru-aqua-dark
+        - $SNAP/share/gtk2/Yaru-blue-dark
+        - $SNAP/share/gtk2/Yaru-green-dark
+        - $SNAP/share/gtk2/Yaru-pink-dark
+        - $SNAP/share/gtk2/Yaru-purple-dark
+        - $SNAP/share/gtk2/Yaru-red-dark
+        - $SNAP/share/gtk2/Yaru-yellow-dark
         - $SNAP/share/gtk2/elementary
         - $SNAP/share/gtk2/Ambiant-MATE
         - $SNAP/share/gtk2/Ambiant-MATE-Dark
@@ -61,7 +75,21 @@ slots:
         - $SNAP/share/themes/Breeze
         - $SNAP/share/themes/Breeze-Dark
         - $SNAP/share/themes/Yaru
+        - $SNAP/share/themes/Yaru-aqua
+        - $SNAP/share/themes/Yaru-blue
+        - $SNAP/share/themes/Yaru-green
+        - $SNAP/share/themes/Yaru-pink
+        - $SNAP/share/themes/Yaru-purple
+        - $SNAP/share/themes/Yaru-red
+        - $SNAP/share/themes/Yaru-yellow
         - $SNAP/share/themes/Yaru-dark
+        - $SNAP/share/themes/Yaru-aqua-dark
+        - $SNAP/share/themes/Yaru-blue-dark
+        - $SNAP/share/themes/Yaru-green-dark
+        - $SNAP/share/themes/Yaru-pink-dark
+        - $SNAP/share/themes/Yaru-purple-dark
+        - $SNAP/share/themes/Yaru-red-dark
+        - $SNAP/share/themes/Yaru-yellow-dark
         - $SNAP/share/themes/elementary
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
@@ -313,7 +341,8 @@ parts:
     after: [utils]
     source: https://github.com/ubuntu/yaru.git
     source-depth: 1
-    source-branch: ubuntu/impish
+    #source-branch: ubuntu/impish
+    source-branch: gtk_accent_colors
     plugin: meson
     meson-parameters:
       - --prefix=/
