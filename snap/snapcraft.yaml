@@ -351,10 +351,9 @@ parts:
   # Yaru, the new official Ubuntu theme in 18.10 (formerly known by its code name Communitheme)
   yaru:
     after: [utils]
-    #source: https://github.com/ubuntu/yaru.git
-    source: https://github.com/3v1n0/yaru.git
+    source: https://github.com/ubuntu/yaru.git
     source-depth: 1
-    source-branch: accents-tuning
+    source-branch: master
     #source-branch: ubuntu/impish
     plugin: meson
     meson-parameters:
