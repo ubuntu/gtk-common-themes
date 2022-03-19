@@ -78,6 +78,7 @@ slots:
         - $SNAP/share/themes/Arc-Darker
         - $SNAP/share/themes/Breeze
         - $SNAP/share/themes/Breeze-Dark
+        - $SNAP/share/themes/Yaru-light
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/Yaru-hdpi
         - $SNAP/share/themes/Yaru-xhdpi
@@ -366,6 +367,8 @@ parts:
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
       $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      # Copy Yaru to Yaru-light to support < Jammy
+      cp -rp $SNAPCRAFT_PART_INSTALL/share/themes/Yaru $SNAPCRAFT_PART_INSTALL/share/themes/Yaru-light
     stage:
       - share/icons
       - share/sounds
