@@ -80,8 +80,6 @@ slots:
         - $SNAP/share/themes/Breeze-Dark
         - $SNAP/share/themes/Yaru-light
         - $SNAP/share/themes/Yaru
-        - $SNAP/share/themes/Yaru-hdpi
-        - $SNAP/share/themes/Yaru-xhdpi
         - $SNAP/share/themes/Yaru-bark
         - $SNAP/share/themes/Yaru-blue
         - $SNAP/share/themes/Yaru-magenta
@@ -92,8 +90,6 @@ slots:
         - $SNAP/share/themes/Yaru-sage
         - $SNAP/share/themes/Yaru-viridian
         - $SNAP/share/themes/Yaru-dark
-        - $SNAP/share/themes/Yaru-dark-hdpi
-        - $SNAP/share/themes/Yaru-dark-xhdpi
         - $SNAP/share/themes/Yaru-bark-dark
         - $SNAP/share/themes/Yaru-blue-dark
         - $SNAP/share/themes/Yaru-magenta-dark
