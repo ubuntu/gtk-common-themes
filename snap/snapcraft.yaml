@@ -350,7 +350,7 @@ parts:
     after: [utils]
     source: https://github.com/ubuntu/yaru.git
     source-depth: 1
-    source-branch: master
+    source-tag: 22.04.3.1
     #source-branch: ubuntu/impish
     plugin: meson
     meson-parameters:
