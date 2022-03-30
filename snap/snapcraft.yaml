@@ -31,7 +31,25 @@ slots:
         - $SNAP/share/gtk2/Breeze
         - $SNAP/share/gtk2/Breeze-Dark
         - $SNAP/share/gtk2/Yaru
+        - $SNAP/share/gtk2/Yaru-bark
+        - $SNAP/share/gtk2/Yaru-blue
+        - $SNAP/share/gtk2/Yaru-magenta
+        - $SNAP/share/gtk2/Yaru-olive
+        - $SNAP/share/gtk2/Yaru-prussiangreen
+        - $SNAP/share/gtk2/Yaru-purple
+        - $SNAP/share/gtk2/Yaru-red
+        - $SNAP/share/gtk2/Yaru-sage
+        - $SNAP/share/gtk2/Yaru-viridian
         - $SNAP/share/gtk2/Yaru-dark
+        - $SNAP/share/gtk2/Yaru-bark-dark
+        - $SNAP/share/gtk2/Yaru-blue-dark
+        - $SNAP/share/gtk2/Yaru-magenta-dark
+        - $SNAP/share/gtk2/Yaru-olive-dark
+        - $SNAP/share/gtk2/Yaru-prussiangreen-dark
+        - $SNAP/share/gtk2/Yaru-purple-dark
+        - $SNAP/share/gtk2/Yaru-red-dark
+        - $SNAP/share/gtk2/Yaru-sage-dark
+        - $SNAP/share/gtk2/Yaru-viridian-dark
         - $SNAP/share/gtk2/elementary
         - $SNAP/share/gtk2/Ambiant-MATE
         - $SNAP/share/gtk2/Ambiant-MATE-Dark
@@ -60,8 +78,27 @@ slots:
         - $SNAP/share/themes/Arc-Darker
         - $SNAP/share/themes/Breeze
         - $SNAP/share/themes/Breeze-Dark
+        - $SNAP/share/themes/Yaru-light
         - $SNAP/share/themes/Yaru
+        - $SNAP/share/themes/Yaru-bark
+        - $SNAP/share/themes/Yaru-blue
+        - $SNAP/share/themes/Yaru-magenta
+        - $SNAP/share/themes/Yaru-olive
+        - $SNAP/share/themes/Yaru-prussiangreen
+        - $SNAP/share/themes/Yaru-purple
+        - $SNAP/share/themes/Yaru-red
+        - $SNAP/share/themes/Yaru-sage
+        - $SNAP/share/themes/Yaru-viridian
         - $SNAP/share/themes/Yaru-dark
+        - $SNAP/share/themes/Yaru-bark-dark
+        - $SNAP/share/themes/Yaru-blue-dark
+        - $SNAP/share/themes/Yaru-magenta-dark
+        - $SNAP/share/themes/Yaru-olive-dark
+        - $SNAP/share/themes/Yaru-prussiangreen-dark
+        - $SNAP/share/themes/Yaru-purple-dark
+        - $SNAP/share/themes/Yaru-red-dark
+        - $SNAP/share/themes/Yaru-sage-dark
+        - $SNAP/share/themes/Yaru-viridian-dark
         - $SNAP/share/themes/elementary
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
@@ -313,7 +350,9 @@ parts:
     after: [utils]
     source: https://github.com/ubuntu/yaru.git
     source-depth: 1
-    source-branch: ubuntu/impish
+    #source-tag: 22.04.3.1
+    source-commit: 8afd77f61a07813f97c941a3a7e5c0a51f6420da
+    #source-branch: ubuntu/impish
     plugin: meson
     meson-parameters:
       - --prefix=/
@@ -325,6 +364,8 @@ parts:
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
       $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      # Copy Yaru to Yaru-light to support < Jammy
+      cp -rp $SNAPCRAFT_PART_INSTALL/share/themes/Yaru $SNAPCRAFT_PART_INSTALL/share/themes/Yaru-light
     stage:
       - share/icons
       - share/sounds
