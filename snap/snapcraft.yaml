@@ -383,8 +383,19 @@ parts:
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
       $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
-      # Copy Yaru to Yaru-light to support < Jammy
-      cp -rp $SNAPCRAFT_PART_INSTALL/share/themes/Yaru $SNAPCRAFT_PART_INSTALL/share/themes/Yaru-light
+      # Link Yaru to Yaru-light to support < Jammy
+      themes_path=$SNAPCRAFT_PART_INSTALL/share/themes
+      mkdir -p $themes_path/Yaru-light
+      cp $themes_path/Yaru/index.theme \
+        $themes_path/Yaru-light/
+      sed -i 's,^Name=Yaru$,Name=Yaru-light,g' \
+        $themes_path/Yaru-light/index.theme
+      for t in $themes_path/Yaru/*; do
+        target=$(basename $t)
+        if [ ! -e $themes_path/Yaru-light/$target ]; then
+          ln -sv ../Yaru/$target $themes_path/Yaru-light/
+        fi
+      done
     stage:
       - share/icons
       - share/sounds
