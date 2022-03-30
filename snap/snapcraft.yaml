@@ -132,6 +132,25 @@ slots:
         - $SNAP/share/icons/DMZ-Black
         - $SNAP/share/icons/DMZ-White
         - $SNAP/share/icons/Yaru
+        - $SNAP/share/icons/Yaru-bark
+        - $SNAP/share/icons/Yaru-blue
+        - $SNAP/share/icons/Yaru-magenta
+        - $SNAP/share/icons/Yaru-olive
+        - $SNAP/share/icons/Yaru-prussiangreen
+        - $SNAP/share/icons/Yaru-purple
+        - $SNAP/share/icons/Yaru-red
+        - $SNAP/share/icons/Yaru-sage
+        - $SNAP/share/icons/Yaru-viridian
+        - $SNAP/share/icons/Yaru-dark
+        - $SNAP/share/icons/Yaru-bark-dark
+        - $SNAP/share/icons/Yaru-blue-dark
+        - $SNAP/share/icons/Yaru-magenta-dark
+        - $SNAP/share/icons/Yaru-olive-dark
+        - $SNAP/share/icons/Yaru-prussiangreen-dark
+        - $SNAP/share/icons/Yaru-purple-dark
+        - $SNAP/share/icons/Yaru-red-dark
+        - $SNAP/share/icons/Yaru-sage-dark
+        - $SNAP/share/icons/Yaru-viridian-dark
         - $SNAP/share/icons/elementary
         - $SNAP/share/icons/Ambiant-MATE
         - $SNAP/share/icons/Radiant-MATE
