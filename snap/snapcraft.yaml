@@ -402,11 +402,11 @@ parts:
       - share/gtk2
       - share/themes
 
-  # Ubuntu MATE gtk theme
+  # Old Ubuntu MATE theme; shipped in <= 21.10
   ubuntu-mate-gtk-theme:
     after: [utils]
     plugin: dump
-    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-themes_18.04.11_all.deb
+    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-themes_20.04.2_all.deb
     override-build: |
       snapcraftctl build
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
@@ -416,11 +416,11 @@ parts:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
 
-  # Ubuntu MATE icon theme
+  # Old Ubuntu MATE theme; shipped in <= 21.10
   ubuntu-mate-icon-theme:
     after: [utils]
     plugin: dump
-    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-icon-themes_18.04.11_all.deb
+    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-icon-themes_20.04.2_all.deb
     override-build: |
       snapcraftctl build
       # Don't include panel icons to reduce size as they aren't
