@@ -54,6 +54,10 @@ slots:
         - $SNAP/share/gtk2/Ambiant-MATE
         - $SNAP/share/gtk2/Ambiant-MATE-Dark
         - $SNAP/share/gtk2/Radiant-MATE
+        - $SNAP/share/gtk2/Yaru-MATE-light
+        - $SNAP/share/gtk2/Yaru-MATE-dark
+        - $SNAP/share/gtk2/Yaru-mate
+        - $SNAP/share/gtk2/Yaru-mate-dark
         - $SNAP/share/gtk2/Matcha-aliz
         - $SNAP/share/gtk2/Matcha-azul
         - $SNAP/share/gtk2/Matcha-dark-aliz
@@ -103,6 +107,10 @@ slots:
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
         - $SNAP/share/themes/Radiant-MATE
+        - $SNAP/share/themes/Yaru-MATE-light
+        - $SNAP/share/themes/Yaru-MATE-dark
+        - $SNAP/share/themes/Yaru-mate
+        - $SNAP/share/themes/Yaru-mate-dark
         - $SNAP/share/themes/Matcha-aliz
         - $SNAP/share/themes/Matcha-azul
         - $SNAP/share/themes/Matcha-dark-aliz
@@ -154,6 +162,10 @@ slots:
         - $SNAP/share/icons/elementary
         - $SNAP/share/icons/Ambiant-MATE
         - $SNAP/share/icons/Radiant-MATE
+        - $SNAP/share/icons/Yaru-MATE-light
+        - $SNAP/share/icons/Yaru-MATE-dark
+        - $SNAP/share/icons/Yaru-mate
+        - $SNAP/share/icons/Yaru-mate-dark
         - $SNAP/share/icons/Papirus-Adapta-Maia
         - $SNAP/share/icons/Papirus-Adapta-Nokto-Maia
         - $SNAP/share/icons/Papirus-Dark-Maia
@@ -377,6 +389,8 @@ parts:
       - --prefix=/
       - -Dgnome-shell=false
       - -Dsessions=false
+      - -Dmate=true
+      - -Dmate-dark=true
     build-packages:
       - sassc
     override-build: |
@@ -396,17 +410,79 @@ parts:
           ln -sv ../Yaru/$target $themes_path/Yaru-light/
         fi
       done
+      # Link Yaru-mate to Yaru-MATE to support < 22.10
+      gtk2_path=$SNAPCRAFT_PART_INSTALL/share/gtk2
+      ln -sv Yaru-mate $gtk2_path/Yaru-MATE-light
+      ln -sv Yaru-mate-dark $gtk2_path/Yaru-MATE-dark
+
+      mkdir -p $themes_path/Yaru-MATE-light
+      cp $themes_path/Yaru-mate/index.theme \
+        $themes_path/Yaru-MATE-light/
+      sed -i 's,^Name=Yaru-mate$,Name=Yaru-MATE-light,g' \
+        $themes_path/Yaru-MATE-light/index.theme
+      sed -i 's,^GtkTheme=Yaru-mate$,GtkTheme=Yaru-MATE-light,g' \
+        $themes_path/Yaru-MATE-light/index.theme
+      sed -i 's,^IconTheme=Yaru-mate$,IconTheme=Yaru-MATE-light,g' \
+        $themes_path/Yaru-MATE-light/index.theme
+      for t in $themes_path/Yaru-mate/*; do
+        target=$(basename $t)
+        if [ ! -e $themes_path/Yaru-MATE-light/$target ]; then
+          ln -sv ../Yaru-mate/$target $themes_path/Yaru-MATE-light/
+        fi
+      done
+
+      mkdir -p $themes_path/Yaru-MATE-dark
+      cp $themes_path/Yaru-mate-dark/index.theme \
+        $themes_path/Yaru-MATE-dark/
+      sed -i 's,^Name=Yaru-mate-dark$,Name=Yaru-MATE-dark,g' \
+        $themes_path/Yaru-MATE-dark/index.theme
+      sed -i 's,^GtkTheme=Yaru-mate-dark$,GtkTheme=Yaru-MATE-dark,g' \
+        $themes_path/Yaru-MATE-dark/index.theme
+      sed -i 's,^IconTheme=Yaru-mate-dark$,IconTheme=Yaru-MATE-dark,g' \
+        $themes_path/Yaru-MATE-dark/index.theme
+      for t in $themes_path/Yaru-mate-dark/*; do
+        target=$(basename $t)
+        if [ ! -e $themes_path/Yaru-MATE-dark/$target ]; then
+          ln -sv ../Yaru-mate-dark/$target $themes_path/Yaru-MATE-dark/
+        fi
+      done
+
+      icons_path=$SNAPCRAFT_PART_INSTALL/share/icons
+      mkdir -p $icons_path/Yaru-MATE-light
+      cp $icons_path/Yaru-mate/index.theme \
+        $icons_path/Yaru-MATE-light/
+      sed -i 's,^Name=Yaru-mate$,Name=Yaru-MATE-light,g' \
+        $icons_path/Yaru-MATE-light/index.theme
+      for t in $icons_path/Yaru-mate/*; do
+        target=$(basename $t)
+        if [ ! -e $icons_path/Yaru-MATE-light/$target ]; then
+          ln -sv ../Yaru-mate/$target $icons_path/Yaru-MATE-light/
+        fi
+      done
+
+      mkdir -p $icons_path/Yaru-MATE-dark
+      cp $icons_path/Yaru-mate-dark/index.theme \
+        $icons_path/Yaru-MATE-dark/
+      sed -i 's,^Name=Yaru-mate-dark$,Name=Yaru-MATE-dark,g' \
+        $icons_path/Yaru-MATE-dark/index.theme
+      for t in $icons_path/Yaru-mate-dark/*; do
+        target=$(basename $t)
+        if [ ! -e $icons_path/Yaru-MATE-dark/$target ]; then
+          ln -sv ../Yaru-mate-dark/$target $icons_path/Yaru-MATE-dark/
+        fi
+      done
+
     stage:
       - share/icons
       - share/sounds
       - share/gtk2
       - share/themes
 
-  # Ubuntu MATE gtk theme
+  # Old Ubuntu MATE theme; shipped in <= 21.10
   ubuntu-mate-gtk-theme:
     after: [utils]
     plugin: dump
-    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-themes_18.04.11_all.deb
+    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-themes_20.04.2_all.deb
     override-build: |
       snapcraftctl build
       mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
@@ -416,11 +492,11 @@ parts:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
 
-  # Ubuntu MATE icon theme
+  # Old Ubuntu MATE theme; shipped in <= 21.10
   ubuntu-mate-icon-theme:
     after: [utils]
     plugin: dump
-    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-icon-themes_18.04.11_all.deb
+    source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-icon-themes_20.04.2_all.deb
     override-build: |
       snapcraftctl build
       # Don't include panel icons to reduce size as they aren't
