@@ -1,17 +1,18 @@
 name: gtk-common-themes
 adopt-info: version-script
-architectures:
-  - build-on: amd64
-    run-on: all
 summary: All the (common) themes
 description: |
   A snap that exports the GTK and icon themes used on various Linux distros.
 
-# We build against Ubuntu 20.04 packages, but use the "bare" base as
+# We build against Ubuntu 24.04 packages, but use the "bare" base as
 # we don't want to force installation of a large base snap.
-build-base: core20
+build-base: core24
 base: bare
 compression: lzo
+platforms:
+  all:
+    build-on: amd64
+    build-for: all
 
 grade: stable
 confinement: strict
@@ -197,7 +198,12 @@ parts:
     build-packages:
       - git
     override-build: |
-      snapcraftctl set-version $(git -C $SNAPCRAFT_PROJECT_DIR describe --tags 2>/dev/null || echo 0.1)
+      craftctl set version=$(git -C $CRAFT_PROJECT_DIR describe --tags 2>/dev/null || echo 0.1)
+
+  meson-deps:
+    plugin: nil
+    build-packages:
+      - meson
 
   # The base icon theme
   hicolor-icon-theme:
@@ -209,8 +215,8 @@ parts:
     source-type: git
     source-depth: 1
     override-build: |
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      craftctl default
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
     build-packages:
       - gnome-common
 
@@ -218,13 +224,14 @@ parts:
   adwaita-icon-theme:
     after: [utils]
     plugin: meson
-    meson-parameters: [--prefix=/]
+    meson-parameters:
+      - --prefix=/
     source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
     source-type: git
     source-depth: 1
     override-build: |
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      craftctl default
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
     stage:
       - -share/pkgconfig
 
@@ -238,9 +245,9 @@ parts:
     source-type: git
     source-depth: 1
     override-build: |
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      craftctl default
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/icons
       - share/gtk2/*/gtk-2.0
@@ -265,10 +272,10 @@ parts:
       - dmz-cursor-theme
       - sound-theme-freedesktop
     override-build: |
-      snapcraftctl build
-      mv $SNAPCRAFT_PART_INSTALL/usr/share $SNAPCRAFT_PART_INSTALL/share
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      craftctl default
+      mv $CRAFT_PART_INSTALL/usr/share $CRAFT_PART_INSTALL/share
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/icons/Humanity
       - share/icons/Humanity-Dark
@@ -290,8 +297,8 @@ parts:
     source-depth: 1
     meson-parameters: [--prefix=/]
     override-build: |
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      craftctl default
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
@@ -313,9 +320,9 @@ parts:
       - appstream
     override-build: |
       # Don't include cursors, it does some funky linking
-      sed -i.bak -e "s|subdir('cursors')||g" $SNAPCRAFT_PART_SRC/meson.build
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      sed -i.bak -e "s|subdir('cursors')||g" $CRAFT_PART_SRC/meson.build
+      craftctl default
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
     stage:
       - share/icons/elementary
 
@@ -336,8 +343,8 @@ parts:
       - optipng
     override-build: |
       rm -f autogen.sh
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      craftctl default
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
@@ -359,11 +366,11 @@ parts:
     build-packages:
       - sassc
     override-build: |
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      craftctl default
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
       # Link Yaru to Yaru-light to support < Jammy
-      themes_path=$SNAPCRAFT_PART_INSTALL/share/themes
+      themes_path=$CRAFT_PART_INSTALL/share/themes
       mkdir -p $themes_path/Yaru-light
       cp $themes_path/Yaru/index.theme \
         $themes_path/Yaru-light/
@@ -376,7 +383,7 @@ parts:
         fi
       done
       # Link Yaru-mate to Yaru-MATE to support < 22.10
-      gtk2_path=$SNAPCRAFT_PART_INSTALL/share/gtk2
+      gtk2_path=$CRAFT_PART_INSTALL/share/gtk2
       ln -sv Yaru-mate $gtk2_path/Yaru-MATE-light
       ln -sv Yaru-mate-dark $gtk2_path/Yaru-MATE-dark
 
@@ -412,7 +419,7 @@ parts:
         fi
       done
 
-      icons_path=$SNAPCRAFT_PART_INSTALL/share/icons
+      icons_path=$CRAFT_PART_INSTALL/share/icons
       mkdir -p $icons_path/Yaru-MATE-light
       cp $icons_path/Yaru-mate/index.theme \
         $icons_path/Yaru-MATE-light/
@@ -449,10 +456,10 @@ parts:
     plugin: dump
     source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-themes_20.04.2_all.deb
     override-build: |
-      snapcraftctl build
-      mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
-      mv $SNAPCRAFT_PART_INSTALL/usr/share/themes/* $SNAPCRAFT_PART_INSTALL/share/themes/
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/share/themes
+      mv $CRAFT_PART_INSTALL/usr/share/themes/* $CRAFT_PART_INSTALL/share/themes/
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
@@ -463,14 +470,14 @@ parts:
     plugin: dump
     source: http://de.archive.ubuntu.com/ubuntu/pool/universe/u/ubuntu-mate-artwork/ubuntu-mate-icon-themes_20.04.2_all.deb
     override-build: |
-      snapcraftctl build
+      craftctl default
       # Don't include panel icons to reduce size as they aren't
       # generally useful in the snap.
-      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
+      find $CRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
 
-      mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
-      mv $SNAPCRAFT_PART_INSTALL/usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      mkdir -p $CRAFT_PART_INSTALL/share/icons
+      mv $CRAFT_PART_INSTALL/usr/share/icons/* $CRAFT_PART_INSTALL/share/icons/
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
     stage:
       - share/icons/Ambiant-MATE
       - share/icons/Radiant-MATE
@@ -481,10 +488,10 @@ parts:
     plugin: nil
     source: https://github.com/vinceliuice/matcha/archive/2019_05_09.tar.gz
     override-build: |
-      snapcraftctl build
-      mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
-      ./Install -d $SNAPCRAFT_PART_INSTALL/share/themes
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/share/themes
+      ./Install -d $CRAFT_PART_INSTALL/share/themes
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
@@ -495,14 +502,14 @@ parts:
     plugin: cmake
     source: https://github.com/Ste74/papirus-maia-icon-theme.git
     override-build: |
-      snapcraftctl build
+      craftctl default
       # Don't include app and panel icons to reduce size as they aren't
       # generally useful in the snap.
-      find $SNAPCRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
+      find $CRAFT_PART_INSTALL/usr/share/icons -name panel | xargs rm -rf
 
-      mkdir -p $SNAPCRAFT_PART_INSTALL/share/icons
-      mv $SNAPCRAFT_PART_INSTALL/usr/share/icons/* $SNAPCRAFT_PART_INSTALL/share/icons/
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      mkdir -p $CRAFT_PART_INSTALL/share/icons
+      mv $CRAFT_PART_INSTALL/usr/share/icons/* $CRAFT_PART_INSTALL/share/icons/
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
     stage:
       - share/icons/Papirus-*
 
@@ -515,8 +522,8 @@ parts:
     source-depth: 1
     meson-parameters: [--prefix=/]
     override-build: |
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/split-gtk-theme.sh $SNAPCRAFT_PART_INSTALL
+      craftctl default
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
@@ -536,8 +543,8 @@ parts:
     source-tag: v0.15.2
     source-depth: 1
     override-build: |
-      snapcraftctl build
-      $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
+      craftctl default
+      $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
     stage:
       - share/icons/elementary-xfce
       - share/icons/elementary-xfce-dark
@@ -555,8 +562,8 @@ parts:
     source-tag: v20200320 # Latest master fails to build
     source-depth: 1
     override-build: |
-        mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
-        ./install.sh --dest $SNAPCRAFT_PART_INSTALL/share/themes
+        mkdir -p $CRAFT_PART_INSTALL/share/themes
+        ./install.sh --dest $CRAFT_PART_INSTALL/share/themes
     stage:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
@@ -566,7 +573,7 @@ parts:
     stage-packages:
       - xcursor-themes
     override-build: |
-      mv $SNAPCRAFT_PART_INSTALL/usr/share $SNAPCRAFT_PART_INSTALL/share
+      mv $CRAFT_PART_INSTALL/usr/share $CRAFT_PART_INSTALL/share
     stage:
       - share/icons/handhelds
       - share/icons/redglass
@@ -578,8 +585,8 @@ parts:
     after: [ubuntu-themes]
     plugin: nil
     override-prime: |
-      mkdir -p $SNAPCRAFT_PRIME/share/icons/default
-      cd $SNAPCRAFT_PRIME/share/icons/default
+      mkdir -p $CRAFT_PRIME/share/icons/default
+      cd $CRAFT_PRIME/share/icons/default
       ln -s ../DMZ-White/cursor.theme index.theme
 
   utils:
@@ -588,5 +595,4 @@ parts:
     prime:
       - -*
     build-packages:
-      - try: [gtk-update-icon-cache]
-      - else: [libgtk-3-bin]
+      - gtk-update-icon-cache
