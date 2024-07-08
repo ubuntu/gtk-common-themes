@@ -208,17 +208,15 @@ parts:
   # The base icon theme
   hicolor-icon-theme:
     after: [utils]
-    plugin: autotools
-    autotools-configure-parameters:
+    plugin: meson
+    meson-parameters:
       - --prefix=/
-    source: git://anongit.freedesktop.org/xdg/default-icon-theme
+    source: https://gitlab.freedesktop.org/xdg/default-icon-theme.git
     source-type: git
     source-depth: 1
     override-build: |
       craftctl default
       $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
-    build-packages:
-      - gnome-common
 
   # GNOME's default icon theme, also used by Fedora
   adwaita-icon-theme:
@@ -241,7 +239,7 @@ parts:
     plugin: autotools
     autotools-configure-parameters:
       - --prefix=/
-    source: https://gitlab.gnome.org/GNOME/gnome-themes-extra.git
+    source: https://gitlab.gnome.org/Archive/gnome-themes-extra.git
     source-type: git
     source-depth: 1
     override-build: |
@@ -276,6 +274,11 @@ parts:
       mv $CRAFT_PART_INSTALL/usr/share $CRAFT_PART_INSTALL/share
       $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
       $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
+
+      # Define a default, fallback cursor theme in case the requested theme
+      # isn't included in gtk-common-themes (LP: #1900334).
+      mkdir -p $CRAFT_PRIME/share/icons/default
+      ln -s ../DMZ-White/cursor.theme $CRAFT_PRIME/share/icons/default/index.theme
     stage:
       - share/icons/Humanity
       - share/icons/Humanity-Dark
@@ -283,6 +286,7 @@ parts:
       - share/icons/ubuntu-mono-light
       - share/icons/DMZ-Black
       - share/icons/DMZ-White
+      - share/icons/default
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
       - share/sounds/freedesktop
@@ -293,7 +297,7 @@ parts:
     plugin: meson
     source: https://github.com/elementary/stylesheet.git
     source-type: git
-    source-tag: 5.4.2
+    source-tag: 8.1.0
     source-depth: 1
     meson-parameters: [--prefix=/]
     override-build: |
@@ -305,7 +309,6 @@ parts:
     build-packages:
       - libgtk-3-dev
       - libglib2.0-dev
-      - gnome-common
 
   # Elementary icon theme
   elementary-icon-theme:
@@ -355,6 +358,7 @@ parts:
     source: https://github.com/ubuntu/yaru.git
     source-depth: 1
     source-tag: 24.10.4
+    #source-branch: ubuntu/noble
     plugin: meson
     meson-parameters:
       - --prefix=/
@@ -486,11 +490,12 @@ parts:
   matcha-gtk-theme:
     after: [utils]
     plugin: nil
-    source: https://github.com/vinceliuice/matcha/archive/2019_05_09.tar.gz
+    source: https://github.com/vinceliuice/Matcha-gtk-theme.git
+    source-type: git
     override-build: |
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/share/themes
-      ./Install -d $CRAFT_PART_INSTALL/share/themes
+      ./install.sh -d $CRAFT_PART_INSTALL/share/themes
       $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/gtk2/*/gtk-2.0
@@ -530,7 +535,6 @@ parts:
     build-packages:
       - libgtk-3-dev
       - libglib2.0-dev
-      - gnome-common
 
   # Elementary-xfce icon theme - Xubuntu default
   elementary-xfce-icon-theme:
@@ -540,7 +544,7 @@ parts:
       - --prefix=/
     source: https://github.com/shimmerproject/elementary-xfce.git
     source-type: git
-    source-tag: v0.15.2
+    source-tag: v0.19
     source-depth: 1
     override-build: |
       craftctl default
@@ -554,16 +558,28 @@ parts:
       - libgtk-3-dev
       - optipng
 
+  dart-sass:
+    plugin: nil
+    source: https://github.com/sass/dart-sass/releases/download/1.77.5/dart-sass-1.77.5-linux-x64.tar.gz
+    override-build: |
+      mkdir -p $CRAFT_STAGE/bin
+      cp -a sass src $CRAFT_STAGE/bin
+    prime:
+      - -*
+
   # Materia icons - Ubuntu Studio default
   materia-gtk-theme:
-    after: [utils]
-    plugin: nil
+    after: [utils, dart-sass]
+    plugin: meson
     source: https://github.com/nana-4/materia-theme.git
-    source-tag: v20200320 # Latest master fails to build
+    source-type: git
     source-depth: 1
+    meson-parameters: [--prefix=/]
+    build-packages:
+      - sassc
     override-build: |
-        mkdir -p $CRAFT_PART_INSTALL/share/themes
-        ./install.sh --dest $CRAFT_PART_INSTALL/share/themes
+      craftctl default
+      $CRAFT_STAGE/split-gtk-theme.sh $CRAFT_PART_INSTALL
     stage:
       - share/gtk2/*/gtk-2.0
       - share/themes/*/gtk-3*
@@ -578,16 +594,6 @@ parts:
       - share/icons/handhelds
       - share/icons/redglass
       - share/icons/whiteglass
-
-  # Define a default, fallback cursor theme in case the requested theme
-  # isn't included in gtk-common-themes (LP: #1900334).
-  default-cursor-theme:
-    after: [ubuntu-themes]
-    plugin: nil
-    override-prime: |
-      mkdir -p $CRAFT_PRIME/share/icons/default
-      cd $CRAFT_PRIME/share/icons/default
-      ln -s ../DMZ-White/cursor.theme index.theme
 
   utils:
     plugin: dump
