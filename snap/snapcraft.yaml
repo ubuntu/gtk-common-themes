@@ -208,9 +208,8 @@ parts:
   # GNOME's default icon theme, also used by Fedora
   adwaita-icon-theme:
     after: [utils]
-    plugin: autotools
-    autotools-configure-parameters:
-      - --prefix=/
+    plugin: meson
+    meson-parameters: [--prefix=/]
     source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
     source-type: git
     override-build: |
