@@ -91,6 +91,7 @@ slots:
         - $SNAP/share/themes/Yaru-sage
         - $SNAP/share/themes/Yaru-viridian
         - $SNAP/share/themes/Yaru-yellow
+        - $SNAP/share/themes/Yaru-wartybrown
         - $SNAP/share/themes/Yaru-dark
         - $SNAP/share/themes/Yaru-bark-dark
         - $SNAP/share/themes/Yaru-blue-dark
@@ -102,6 +103,7 @@ slots:
         - $SNAP/share/themes/Yaru-sage-dark
         - $SNAP/share/themes/Yaru-viridian-dark
         - $SNAP/share/themes/Yaru-yellow-dark
+        - $SNAP/share/themes/Yaru-wartybrown-dark
         - $SNAP/share/themes/elementary
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
@@ -149,6 +151,7 @@ slots:
         - $SNAP/share/icons/Yaru-sage
         - $SNAP/share/icons/Yaru-viridian
         - $SNAP/share/icons/Yaru-yellow
+        - $SNAP/share/icons/Yaru-wartybrown
         - $SNAP/share/icons/Yaru-dark
         - $SNAP/share/icons/Yaru-bark-dark
         - $SNAP/share/icons/Yaru-blue-dark
@@ -160,6 +163,7 @@ slots:
         - $SNAP/share/icons/Yaru-sage-dark
         - $SNAP/share/icons/Yaru-viridian-dark
         - $SNAP/share/icons/Yaru-yellow-dark
+        - $SNAP/share/icons/Yaru-wartybrown-dark
         - $SNAP/share/icons/elementary
         - $SNAP/share/icons/Ambiant-MATE
         - $SNAP/share/icons/Radiant-MATE
