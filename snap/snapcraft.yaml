@@ -301,6 +301,8 @@ parts:
     source-depth: 1
     # Set scale_factors to 1, it does some funky linking
     meson-parameters: [--prefix=/, -Dscale_factors=1, -Dvolume_icons=false]
+    build-packages:
+      - appstream
     override-build: |
       # Don't include cursors, it does some funky linking
       sed -i.bak -e "s|subdir('cursors')||g" $SNAPCRAFT_PART_SRC/meson.build
