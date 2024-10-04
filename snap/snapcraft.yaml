@@ -90,6 +90,8 @@ slots:
         - $SNAP/share/themes/Yaru-red
         - $SNAP/share/themes/Yaru-sage
         - $SNAP/share/themes/Yaru-viridian
+        - $SNAP/share/themes/Yaru-yellow
+        - $SNAP/share/themes/Yaru-wartybrown
         - $SNAP/share/themes/Yaru-dark
         - $SNAP/share/themes/Yaru-bark-dark
         - $SNAP/share/themes/Yaru-blue-dark
@@ -100,6 +102,8 @@ slots:
         - $SNAP/share/themes/Yaru-red-dark
         - $SNAP/share/themes/Yaru-sage-dark
         - $SNAP/share/themes/Yaru-viridian-dark
+        - $SNAP/share/themes/Yaru-yellow-dark
+        - $SNAP/share/themes/Yaru-wartybrown-dark
         - $SNAP/share/themes/elementary
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
@@ -146,6 +150,8 @@ slots:
         - $SNAP/share/icons/Yaru-red
         - $SNAP/share/icons/Yaru-sage
         - $SNAP/share/icons/Yaru-viridian
+        - $SNAP/share/icons/Yaru-yellow
+        - $SNAP/share/icons/Yaru-wartybrown
         - $SNAP/share/icons/Yaru-dark
         - $SNAP/share/icons/Yaru-bark-dark
         - $SNAP/share/icons/Yaru-blue-dark
@@ -156,6 +162,8 @@ slots:
         - $SNAP/share/icons/Yaru-red-dark
         - $SNAP/share/icons/Yaru-sage-dark
         - $SNAP/share/icons/Yaru-viridian-dark
+        - $SNAP/share/icons/Yaru-yellow-dark
+        - $SNAP/share/icons/Yaru-wartybrown-dark
         - $SNAP/share/icons/elementary
         - $SNAP/share/icons/Ambiant-MATE
         - $SNAP/share/icons/Radiant-MATE
@@ -339,9 +347,7 @@ parts:
     after: [utils]
     source: https://github.com/ubuntu/yaru.git
     source-depth: 1
-    #source-tag: 22.04.3.1
-    source-commit: 8afd77f61a07813f97c941a3a7e5c0a51f6420da
-    #source-branch: ubuntu/impish
+    source-tag: 24.10.4
     plugin: meson
     meson-parameters:
       - --prefix=/
