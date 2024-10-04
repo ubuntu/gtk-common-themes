@@ -199,6 +199,7 @@ parts:
       - --prefix=/
     source: git://anongit.freedesktop.org/xdg/default-icon-theme
     source-type: git
+    source-depth: 1
     override-build: |
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
@@ -208,11 +209,11 @@ parts:
   # GNOME's default icon theme, also used by Fedora
   adwaita-icon-theme:
     after: [utils]
-    plugin: autotools
-    autotools-configure-parameters:
-      - --prefix=/
+    plugin: meson
+    meson-parameters: [--prefix=/]
     source: https://gitlab.gnome.org/GNOME/adwaita-icon-theme.git
     source-type: git
+    source-depth: 1
     override-build: |
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
@@ -227,6 +228,7 @@ parts:
       - --prefix=/
     source: https://gitlab.gnome.org/GNOME/gnome-themes-extra.git
     source-type: git
+    source-depth: 1
     override-build: |
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
@@ -277,6 +279,7 @@ parts:
     source: https://github.com/elementary/stylesheet.git
     source-type: git
     source-tag: 5.4.2
+    source-depth: 1
     meson-parameters: [--prefix=/]
     override-build: |
       snapcraftctl build
@@ -295,8 +298,11 @@ parts:
     plugin: meson
     source: https://github.com/elementary/icons.git
     source-type: git
+    source-depth: 1
     # Set scale_factors to 1, it does some funky linking
     meson-parameters: [--prefix=/, -Dscale_factors=1, -Dvolume_icons=false]
+    build-packages:
+      - appstream
     override-build: |
       # Don't include cursors, it does some funky linking
       sed -i.bak -e "s|subdir('cursors')||g" $SNAPCRAFT_PART_SRC/meson.build
@@ -311,6 +317,7 @@ parts:
     plugin: meson
     source: https://github.com/jnsh/arc-theme.git
     source-type: git
+    source-depth: 1
     meson-parameters:
       - --prefix=/
       - -Dthemes=gtk2,gtk3
@@ -498,6 +505,7 @@ parts:
     plugin: meson
     source: https://github.com/shimmerproject/Greybird.git
     source-type: git
+    source-depth: 1
     meson-parameters: [--prefix=/]
     override-build: |
       snapcraftctl build
@@ -519,6 +527,7 @@ parts:
     source: https://github.com/shimmerproject/elementary-xfce.git
     source-type: git
     source-tag: v0.15.2
+    source-depth: 1
     override-build: |
       snapcraftctl build
       $SNAPCRAFT_STAGE/update-icon-cache.sh $SNAPCRAFT_PART_INSTALL/share/icons
@@ -537,6 +546,7 @@ parts:
     plugin: nil
     source: https://github.com/nana-4/materia-theme.git
     source-tag: v20200320 # Latest master fails to build
+    source-depth: 1
     override-build: |
         mkdir -p $SNAPCRAFT_PART_INSTALL/share/themes
         ./install.sh --dest $SNAPCRAFT_PART_INSTALL/share/themes
