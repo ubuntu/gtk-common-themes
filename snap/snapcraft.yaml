@@ -351,6 +351,7 @@ parts:
     plugin: meson
     meson-parameters:
       - --prefix=/
+      - -Daccent-colors=bark,sage,olive,viridian,prussiangreen,blue,purple,magenta,red,yellow,wartybrown
       - -Dgnome-shell=false
       - -Dsessions=false
       - -Dmate=true
