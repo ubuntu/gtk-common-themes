@@ -30,6 +30,7 @@ slots:
         - $SNAP/share/gtk2/Arc
         - $SNAP/share/gtk2/Arc-Dark
         - $SNAP/share/gtk2/Arc-Darker
+        - $SNAP/share/gtk2/Arc-Lighter
         - $SNAP/share/gtk2/Yaru
         - $SNAP/share/gtk2/Yaru-bark
         - $SNAP/share/gtk2/Yaru-blue
@@ -40,6 +41,8 @@ slots:
         - $SNAP/share/gtk2/Yaru-red
         - $SNAP/share/gtk2/Yaru-sage
         - $SNAP/share/gtk2/Yaru-viridian
+        - $SNAP/share/gtk2/Yaru-wartybrown
+        - $SNAP/share/gtk2/Yaru-yellow
         - $SNAP/share/gtk2/Yaru-dark
         - $SNAP/share/gtk2/Yaru-bark-dark
         - $SNAP/share/gtk2/Yaru-blue-dark
@@ -50,7 +53,8 @@ slots:
         - $SNAP/share/gtk2/Yaru-red-dark
         - $SNAP/share/gtk2/Yaru-sage-dark
         - $SNAP/share/gtk2/Yaru-viridian-dark
-        - $SNAP/share/gtk2/elementary
+        - $SNAP/share/gtk2/Yaru-wartybrown-dark
+        - $SNAP/share/gtk2/Yaru-yellow-dark
         - $SNAP/share/gtk2/Ambiant-MATE
         - $SNAP/share/gtk2/Ambiant-MATE-Dark
         - $SNAP/share/gtk2/Radiant-MATE
@@ -60,14 +64,24 @@ slots:
         - $SNAP/share/gtk2/Yaru-mate-dark
         - $SNAP/share/gtk2/Matcha-aliz
         - $SNAP/share/gtk2/Matcha-azul
+        - $SNAP/share/gtk2/Matcha-pueril
+        - $SNAP/share/gtk2/Matcha-sea
         - $SNAP/share/gtk2/Matcha-dark-aliz
         - $SNAP/share/gtk2/Matcha-dark-azul
+        - $SNAP/share/gtk2/Matcha-dark-pueril
         - $SNAP/share/gtk2/Matcha-dark-sea
-        - $SNAP/share/gtk2/Matcha-sea
+        - $SNAP/share/gtk2/Matcha-light-aliz
+        - $SNAP/share/gtk2/Matcha-light-azul
+        - $SNAP/share/gtk2/Matcha-light-pueril
+        - $SNAP/share/gtk2/Matcha-light-sea
         - $SNAP/share/gtk2/Greybird
         - $SNAP/share/gtk2/Greybird-dark
+        - $SNAP/share/gtk2/Materia
         - $SNAP/share/gtk2/Materia-compact
+        - $SNAP/share/gtk2/Materia-dark
         - $SNAP/share/gtk2/Materia-dark-compact
+        - $SNAP/share/gtk2/Materia-light
+        - $SNAP/share/gtk2/Materia-light-compact
   gtk-3-themes:
     interface: content
     source:
@@ -80,6 +94,7 @@ slots:
         - $SNAP/share/themes/Arc
         - $SNAP/share/themes/Arc-Dark
         - $SNAP/share/themes/Arc-Darker
+        - $SNAP/share/themes/Arc-Lighter
         - $SNAP/share/themes/Yaru-light
         - $SNAP/share/themes/Yaru
         - $SNAP/share/themes/Yaru-bark
@@ -105,7 +120,16 @@ slots:
         - $SNAP/share/themes/Yaru-viridian-dark
         - $SNAP/share/themes/Yaru-yellow-dark
         - $SNAP/share/themes/Yaru-wartybrown-dark
-        - $SNAP/share/themes/elementary
+        - $SNAP/share/themes/io.elementary.stylesheet.banana
+        - $SNAP/share/themes/io.elementary.stylesheet.blueberry
+        - $SNAP/share/themes/io.elementary.stylesheet.bubblegum
+        - $SNAP/share/themes/io.elementary.stylesheet.cocoa
+        - $SNAP/share/themes/io.elementary.stylesheet.grape
+        - $SNAP/share/themes/io.elementary.stylesheet.lime
+        - $SNAP/share/themes/io.elementary.stylesheet.mint
+        - $SNAP/share/themes/io.elementary.stylesheet.orange
+        - $SNAP/share/themes/io.elementary.stylesheet.slate
+        - $SNAP/share/themes/io.elementary.stylesheet.strawberry
         - $SNAP/share/themes/Ambiant-MATE
         - $SNAP/share/themes/Ambiant-MATE-Dark
         - $SNAP/share/themes/Radiant-MATE
@@ -115,10 +139,16 @@ slots:
         - $SNAP/share/themes/Yaru-mate-dark
         - $SNAP/share/themes/Matcha-aliz
         - $SNAP/share/themes/Matcha-azul
+        - $SNAP/share/themes/Matcha-pueril
+        - $SNAP/share/themes/Matcha-sea
         - $SNAP/share/themes/Matcha-dark-aliz
         - $SNAP/share/themes/Matcha-dark-azul
+        - $SNAP/share/themes/Matcha-dark-pueril
         - $SNAP/share/themes/Matcha-dark-sea
-        - $SNAP/share/themes/Matcha-sea
+        - $SNAP/share/themes/Matcha-light-aliz
+        - $SNAP/share/themes/Matcha-light-azul
+        - $SNAP/share/themes/Matcha-light-pueril
+        - $SNAP/share/themes/Matcha-light-sea
         - $SNAP/share/themes/Greybird
         - $SNAP/share/themes/Greybird-dark
         - $SNAP/share/themes/Materia
@@ -151,8 +181,8 @@ slots:
         - $SNAP/share/icons/Yaru-red
         - $SNAP/share/icons/Yaru-sage
         - $SNAP/share/icons/Yaru-viridian
-        - $SNAP/share/icons/Yaru-yellow
         - $SNAP/share/icons/Yaru-wartybrown
+        - $SNAP/share/icons/Yaru-yellow
         - $SNAP/share/icons/Yaru-dark
         - $SNAP/share/icons/Yaru-bark-dark
         - $SNAP/share/icons/Yaru-blue-dark
@@ -163,8 +193,8 @@ slots:
         - $SNAP/share/icons/Yaru-red-dark
         - $SNAP/share/icons/Yaru-sage-dark
         - $SNAP/share/icons/Yaru-viridian-dark
-        - $SNAP/share/icons/Yaru-yellow-dark
         - $SNAP/share/icons/Yaru-wartybrown-dark
+        - $SNAP/share/icons/Yaru-yellow-dark
         - $SNAP/share/icons/elementary
         - $SNAP/share/icons/Ambiant-MATE
         - $SNAP/share/icons/Radiant-MATE
