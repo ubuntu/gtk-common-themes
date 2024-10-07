@@ -522,6 +522,7 @@ parts:
     plugin: nil
     source: https://github.com/vinceliuice/Matcha-gtk-theme.git
     source-type: git
+    source-depth: 1
     override-build: |
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/share/themes
