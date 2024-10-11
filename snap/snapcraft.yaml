@@ -399,6 +399,9 @@ parts:
       - -Dmate-dark=true
     build-packages:
       - sassc
+    override-pull: |
+      craftctl default
+      patch -Rp1 < $CRAFT_PROJECT_DIR/patches/yaru/revert-newer-functions.patch
     override-build: |
       craftctl default
       $CRAFT_STAGE/update-icon-cache.sh $CRAFT_PART_INSTALL/share/icons
